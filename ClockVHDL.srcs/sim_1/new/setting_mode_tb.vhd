@@ -116,10 +116,12 @@ begin
         -- Setting example 14:59
         
         -- Switch to hours units
-        b2 <= '1';
-        wait for 60 ns; 
-        b2 <= '0';
-        
+        for i in 1 to 3 loop
+            b2 <= '1';
+            wait for 20 ns; 
+            b2 <= '0';
+            wait for 20 ns;
+        end loop;
         
         b3 <= '1';
         wait for 20 ns;
@@ -137,6 +139,8 @@ begin
        -- Setting example 20:59
        
         -- Incrementing the decimal automatically zero the units
+        wait for 20 ns;
+
         b3 <= '1';
         wait for 20 ns;
         b3 <= '0'; -- 20:59

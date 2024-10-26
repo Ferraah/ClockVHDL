@@ -18,10 +18,15 @@ architecture hardware of clock is
     signal h_u : integer range 0 to 9; -- hours units (0 to 9)
     signal h_d : integer range 0 to 2; -- hours tens (0 to 2)
 
+    
     signal SETTING_MODE : boolean := false;
-    signal CURRENT_DIGITS : integer range 0 to 3; -- digit selection for setting mode
+    signal CURRENT_DIGIT : integer range 0 to 3; -- digit selection for setting mode
+
+    signal b2_pressed: boolean := false; 
+    signal b3_pressed: boolean := false; 
 
 begin
+
 
     -- Main clock process
     p_clock : process (clk, rst)
@@ -37,15 +42,22 @@ begin
             h_d <= 0;
             hold_b1_time := 0;
             SETTING_MODE <= false;
-            CURRENT_DIGITS <= 0;
+            CURRENT_DIGIT <= 0;
 
         elsif rising_edge(clk) then
+        
+            -- If the button has been held for some time 
+            -- and now they are not, release the lock
+            if b2_pressed and b2='0' then b2_pressed <= false; end if;
+            if b3_pressed and b3='0' then b3_pressed <= false; end if;
+
+            
             -- Check for button 1 press to toggle SETTING_MODE
             if b1 = '1' then
                 hold_b1_time := hold_b1_time + 1;
                 if hold_b1_time >= 20 then -- simulating a 2 seconds hold
                     SETTING_MODE <= not SETTING_MODE;
-                    CURRENT_DIGITS <= 0;
+                    CURRENT_DIGIT <= 0;
                 end if;
             else
                 hold_b1_time := 0;
@@ -91,19 +103,21 @@ begin
                     count_clock <= count_clock + 1;
                 end if;
 
-            -- Setting mode: adjust the current digit selected by `CURRENT_DIGITS`
+            -- Setting mode: adjust the current digit selected by `CURRENT_DIGIT`
             else
-                if b2 = '1' then
-                    CURRENT_DIGITS <= (CURRENT_DIGITS + 1) mod 4;
+                if b2 = '1' and b2_pressed = false then
+                    b2_pressed <= true;
+                    CURRENT_DIGIT <= (CURRENT_DIGIT + 1) mod 4;
                 end if;
 
-                if b3 = '1' then
+                if b3 = '1' and b3_pressed = false then
                     
+                    b3_pressed <= true;
                     -- Reset seconds to 0 when modifying any digits
                     count_sec <= 0;
                     count_clock <= 0;
                     
-                    case CURRENT_DIGITS is
+                    case CURRENT_DIGIT is
                         when 0 => -- Setting minutes units
                         
                             if m_u = 9 then m_u <= 0; else m_u <= m_u + 1; end if;
