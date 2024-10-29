@@ -97,6 +97,9 @@ BEGIN
 			 IF b4 = '1' THEN
 				hold_b4_time := hold_b4_time + 1;
 				IF hold_b4_time >= 20 THEN -- simulating a 2 seconds hold
+				
+				    IF SETTING_ALARM_MODE THEN alarm_active <= true; END IF;
+				    
 					SETTING_ALARM_MODE <= NOT SETTING_ALARM_MODE;
 					CURRENT_DIGITS <= 0;
 					-- if I am in the setting mode, I exit it.
@@ -145,13 +148,6 @@ BEGIN
 					
             -- Setting mode: adjust the current digit selected by `CURRENT_DIGITS`
             IF SETTING_MODE THEN
-                -- Blinking functionality: toggle every 5 clock cycles
-                IF SETTING_MODE AND count_clock = 0 THEN
-                    d1 <= (OTHERS => '1'); -- Blank d1 to simulate blinking
-                    d2 <= (OTHERS => '1'); -- Blank d2
-                    d3 <= (OTHERS => '1'); -- Blank d3
-                    d4 <= (OTHERS => '1'); -- Blank d4
-                END IF;
                 IF b2 = '1' AND b2_pressed = false THEN
                     b2_pressed <= true;
                     CURRENT_DIGITS <= (CURRENT_DIGITS + 1) MOD 3;

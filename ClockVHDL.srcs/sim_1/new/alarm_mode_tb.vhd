@@ -74,7 +74,7 @@ BEGIN
         rst <= '0';
         wait for 6000 ns;
 
-        -- Set the alarm time to 01:01
+        -- Set the alarm time to 00:01
         b4 <= '1'; -- Enter alarm setting mode
         wait for 200 ns;
         b4 <= '0';
@@ -118,10 +118,17 @@ BEGIN
         b4 <= '0';
         wait for 20 ns;
 
-        -- Simulate time passing to reach 01:01
+        -- Simulate time passing to reach 00:01
 
 
-        wait;
+        wait for 200*2 ns;
+        b2 <= '1';
+        wait for 20 ns;
+        b2 <= '0';
+        wait for 200 ns;
+
+        
+        rst <= '1';
     end process;
 
 END;

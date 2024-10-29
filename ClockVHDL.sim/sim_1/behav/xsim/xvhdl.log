@@ -1,0 +1,2 @@
+INFO: [VRFC 10-163] Analyzing VHDL file "/home/df/Documenti/Universita/FPGA/ClockVHDL/ClockVHDL.srcs/sim_1/new/alarm_mode_tb.vhd" into library xil_defaultlib
+INFO: [VRFC 10-3107] analyzing entity 'tb_clock'

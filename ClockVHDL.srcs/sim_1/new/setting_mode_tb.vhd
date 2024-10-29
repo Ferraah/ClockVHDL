@@ -153,6 +153,7 @@ begin
         b1 <= '1';
         wait for 400 ns; -- Hold `b1` to toggle setting mode off
         b1 <= '0';
+        wait for 20 ns;
 
         
         -- End simulation
