@@ -44,10 +44,10 @@ BEGIN
 			SETTING_MODE <= false;
 			SETTING_ALARM_MODE <= false;
 			CURRENT_DIGITS <= 0;
-			d1 <= "0000001";
-			d2 <= "0000001";
-			d3 <= "0000001";
-			d4 <= "0000001";
+			--d1 <= "0000001";
+			--d2 <= "0000001";
+			--d3 <= "0000001";
+			--d4 <= "0000001";
 			b2_pressed <= false;
 			b3_pressed <= false;
 			alarm_active <= false;
