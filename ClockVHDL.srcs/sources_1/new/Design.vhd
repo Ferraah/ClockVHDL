@@ -18,7 +18,7 @@ ARCHITECTURE hardware OF clock IS
 	SIGNAL SETTING_MODE : BOOLEAN := false;
 	SIGNAL SETTING_ALARM_MODE : BOOLEAN := false;
 
-	SIGNAL CURRENT_DIGIT : INTEGER RANGE 0 TO 3; -- digit selection for setting mode
+	SIGNAL CURRENT_DIGITS : INTEGER RANGE 0 TO 3; -- digit selection for setting mode
 	SIGNAL b2_pressed : BOOLEAN := false;
 	SIGNAL b3_pressed : BOOLEAN := false;
 	SIGNAL alarm_active : BOOLEAN := false;
@@ -43,7 +43,7 @@ BEGIN
 			h_d <= 0;
 			SETTING_MODE <= false;
 			SETTING_ALARM_MODE <= false;
-			CURRENT_DIGIT <= 0;
+			CURRENT_DIGITS <= 0;
 			d1 <= "0000001";
 			d2 <= "0000001";
 			d3 <= "0000001";
@@ -83,7 +83,7 @@ BEGIN
 				hold_b1_time := hold_b1_time + 1;
 				IF hold_b1_time >= 20 THEN -- simulating a 2 seconds hold
 					SETTING_MODE <= NOT SETTING_MODE;
-					CURRENT_DIGIT <= 0;
+					CURRENT_DIGITS <= 0;
 					-- if I am in the setting alarm mode, I exit it.
 					IF SETTING_ALARM_MODE = true
 					 THEN
@@ -98,7 +98,7 @@ BEGIN
 				hold_b4_time := hold_b4_time + 1;
 				IF hold_b4_time >= 20 THEN -- simulating a 2 seconds hold
 					SETTING_ALARM_MODE <= NOT SETTING_ALARM_MODE;
-					CURRENT_DIGIT <= 0;
+					CURRENT_DIGITS <= 0;
 					-- if I am in the setting mode, I exit it.
 					IF SETTING_MODE = true
 						THEN
@@ -143,7 +143,7 @@ BEGIN
 			ELSE count_clock <= count_clock + 1;
             END IF;
 					
-            -- Setting mode: adjust the current digit selected by `CURRENT_DIGIT`
+            -- Setting mode: adjust the current digit selected by `CURRENT_DIGITS`
             IF SETTING_MODE THEN
                 -- Blinking functionality: toggle every 5 clock cycles
                 IF SETTING_MODE AND count_clock = 0 THEN
@@ -154,11 +154,11 @@ BEGIN
                 END IF;
                 IF b2 = '1' AND b2_pressed = false THEN
                     b2_pressed <= true;
-                    CURRENT_DIGIT <= (CURRENT_DIGIT + 1) MOD 3;
+                    CURRENT_DIGITS <= (CURRENT_DIGITS + 1) MOD 3;
                 END IF;
                 IF b3 = '1' AND b3_pressed = false THEN
                     b3_pressed <= true;
-                    CASE CURRENT_DIGIT IS
+                    CASE CURRENT_DIGITS IS
                         WHEN 0 => -- Incrementare ore
                             IF h_d = 2 AND h_u = 3 THEN
                                 h_d <= 0; -- Prevenire >23
@@ -190,16 +190,16 @@ BEGIN
 
 
             IF SETTING_ALARM_MODE THEN
-            	alarm_active <= true;
+            	--alarm_active <= true;
                 -- Use b2 to select between alarm hour and minute
                 IF b2 = '1' AND b2_pressed = false THEN
                     b2_pressed <= true;
-                    CURRENT_DIGIT <= (CURRENT_DIGIT + 1) MOD 2; -- 0 for hour, 1 for minute
+                    CURRENT_DIGITS <= (CURRENT_DIGITS + 1) MOD 2; -- 0 for hour, 1 for minute
                 END IF;
                 -- Use b3 to increment the selected alarm time
                 IF b3 = '1' AND b3_pressed = false THEN
                     b3_pressed <= true;
-                    CASE CURRENT_DIGIT IS
+                    CASE CURRENT_DIGITS IS
                         WHEN 0 => -- Increment alarm hour
                             IF alarm_h_d = 2 AND alarm_h_u = 3 THEN
                                 alarm_h_d <= 0; -- Prevent >23
@@ -238,7 +238,7 @@ BEGIN
 	END PROCESS;
 
 	-- 7-Segment Display process with conditional blinking
-    pout : PROCESS (h_u, h_d, m_u, m_d, alarm_h_u, alarm_h_d, alarm_m_u, alarm_m_d, count_clock, SETTING_MODE, SETTING_ALARM_MODE, CURRENT_DIGIT)
+    pout : PROCESS (h_u, h_d, m_u, m_d, alarm_h_u, alarm_h_d, alarm_m_u, alarm_m_d, count_clock, SETTING_MODE, SETTING_ALARM_MODE, CURRENT_DIGITS)
     BEGIN
         IF SETTING_ALARM_MODE THEN
             -- Visualizza l'ora dell'allarme
@@ -329,10 +329,8 @@ BEGIN
                 END CASE;
             ELSE
                 -- Blank selected digit if blinking is active
-                IF CURRENT_DIGIT = 0 THEN d1 <= "1111111";
-                ELSIF CURRENT_DIGIT = 1 THEN d2 <= "1111111";
-                ELSIF CURRENT_DIGIT = 2 THEN d3 <= "1111111";
-                ELSIF CURRENT_DIGIT = 3 THEN d4 <= "1111111";
+                IF CURRENT_DIGITS = 0 THEN d1 <= "1111111"; d2 <= "1111111";
+                ELSE d3 <= "1111111"; d4 <= "1111111"; 
                 END IF;
             END IF;
         END IF;
