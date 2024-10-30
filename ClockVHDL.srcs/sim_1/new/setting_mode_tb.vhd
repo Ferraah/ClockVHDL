@@ -52,110 +52,49 @@ begin
         wait for 10 ns;
     end process clk_process;
 
-    -- Test process
+    -- Test process with button pressed lock functionality
     test_process : process
     begin
         -- Reset the clock
         rst <= '1';
         wait for 20 ns;
         rst <= '0';
-
-        -- Enter SETTING_MODE by holding `b1` for 20 clock cycles
+        wait for 1000 ns;
+        -- Enter SETTING_MODE by pressing `b1` for more than 2s
         b1 <= '1';
         wait for 400 ns; -- Hold `b1` for 20 cycles to toggle setting mode
         b1 <= '0';
-
         wait for 20 ns; -- Allow `SETTING_MODE` to stabilize
 
-        -- Set minutes to 59
+        -- Set minutes to 59 using button press and release for each increment
         -- Set minutes (units) to 9
-        for i in 1 to 9 loop
-            b3 <= '1';  
-            wait for 20 ns;
-            b3 <= '0';
-            wait for 20 ns;
-        end loop;
-
-        -- Switch to minutes decimals and set it to 5
-        b2 <= '1';
-        wait for 20 ns;
-        b2 <= '0';
-        
-        for i in 1 to 5 loop
+        for i in 1 to 20 loop
             b3 <= '1';
             wait for 20 ns;
-            b3 <= '0';
-            wait for 20 ns;
+            b3 <= '0'; -- Release b3 to simulate button lock
+            wait for 400 ns; -- Delay to ensure only one increment per press
         end loop;
-
-        -- Switch to hours units and set it to 3
-        b2 <= '1';
-        wait for 20 ns;
-        b2 <= '0';
-
-        for i in 1 to 3 loop
-            b3 <= '1';
-            wait for 20 ns;
-            b3 <= '0';
-            wait for 20 ns;
-        end loop;
-
-        -- Switch to hours decimals and set it to 2 (to make it 23)
-        b2 <= '1';
-        wait for 20 ns;
-        b2 <= '0';
-
-        for i in 1 to 2 loop
-            b3 <= '1';
-            wait for 20 ns;
-            b3 <= '0';
-            wait for 20 ns;
-        end loop; -- Now we are at 23:59
-
-
-        -- Setting example 14:59
-        
-        -- Switch to hours units
-        for i in 1 to 3 loop
+         for i in 1 to 5 loop
             b2 <= '1';
-            wait for 20 ns; 
-            b2 <= '0';
-            wait for 20 ns;
+            wait for 80 ns;
+            b2 <= '0'; -- Release b3 to simulate button lock
+            wait for 800 ns; -- Delay to ensure only one increment per press
         end loop;
-        
-        b3 <= '1';
-        wait for 20 ns;
-        b3 <= '0'; -- 04:59
 
-        -- Switch to hour decimals
+        -- test debouncing
         b2 <= '1';
-        wait for 20 ns; 
+        wait for 200 ns;
         b2 <= '0';
-        
-        b3 <= '1';
-        wait for 20 ns;
-        b3 <= '0'; -- 14:59
-       
-       -- Setting example 20:59
-       
-        -- Incrementing the decimal automatically zero the units
-        wait for 20 ns;
+        wait for 200 ns;
 
-        b3 <= '1';
-        wait for 20 ns;
-        b3 <= '0'; -- 20:59
-
-        
-        
-        wait for 40 ns;
-        -- Exit setting mode by holding `b1` for 20 clock cycles again
-        
-        b1 <= '1';
+    
+        -- Exit setting mode by holding `b4` for 20 clock cycles again
+        b4 <= '1';
         wait for 400 ns; -- Hold `b1` to toggle setting mode off
-        b1 <= '0';
-        wait for 20 ns;
+        b4 <= '0';
 
-        
+        -- Additional checks can be added here to verify final output values for `d1`, `d2`, `d3`, and `d4`
+
         -- End simulation
         wait for 200 ns;
         assert false report "End of simulation" severity note;
