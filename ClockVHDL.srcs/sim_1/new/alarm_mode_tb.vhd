@@ -72,63 +72,48 @@ BEGIN
         rst <= '1';
         wait for 20 ns;
         rst <= '0';
-        wait for 6000 ns;
+        wait for 600 ns;
 
-        -- Set the alarm time to 00:01
+        -- Set the alarm time to 00:02
         b4 <= '1'; -- Enter alarm setting mode
         wait for 200 ns;
         b4 <= '0';
         wait for 20 ns;
-        
-		for i in 1 to 24 loop
+      
+      	-- set the alarm to 00:02
+		-- increment minutes
+        for i in 1 to 62 loop
             b3 <= '1';
-            wait for 30 ns;
-            b3 <= '0';
             wait for 20 ns;
-        end loop; 
+            b3 <= '0'; -- Release b3 to simulate button lock
+            wait for 40 ns; -- Delay to ensure only one increment per press
+        end loop;
+		-- increment hours
+         for i in 1 to 24 loop
+            b2 <= '1';
+            wait for 20 ns;
+            b2 <= '0'; -- Release b3 to simulate button lock
+            wait for 40 ns; -- Delay to ensure only one increment per press
+        end loop;
 
-        --b2 <= '1'; -- Select hour
-        --wait for 20 ns;
-        --b2 <= '0';
-        --wait for 20 ns;
-
-        --b3 <= '1'; -- Increment hour to 01
-        --wait for 20 ns;
-        --b3 <= '0';
-        --wait for 20 ns;
-
-        b2 <= '1'; -- Select minute
+		-- exit alarm setting with saving the alarm time
         wait for 20 ns;
+        b1 <= '1';
+        wait for 200 ns;
+        b1 <= '0';
+        wait for 20 ns;
+
+
+        wait for 10 us;
+
+
+        b2 <= '1'; -- put the alarm of
+        wait for 200 ns;
         b2 <= '0';
         wait for 20 ns;
-
-        b3 <= '1'; -- Increment minute to 01
-        wait for 20 ns;
-        b3 <= '0';
-        wait for 20 ns;
         
-        b3 <= '1'; -- Increment minute to 02
-        wait for 20 ns;
-        b3 <= '0';
-        wait for 20 ns;
-        
-
-        b4 <= '1'; -- Exit alarm setting mode
-        wait for 200 ns;
-        b4 <= '0';
-        wait for 20 ns;
-
-        -- Simulate time passing to reach 00:01
-
-
-        wait for 200*2 ns;
-        b2 <= '1';
-        wait for 20 ns;
-        b2 <= '0';
-        wait for 200 ns;
-
-        
-        rst <= '1';
+        --rst <= '1';
+        wait;
     end process;
 
 END;
