@@ -88,6 +88,7 @@ BEGIN
             
 			-- Process states
 			CASE current_state IS
+            
 				WHEN STANDBY =>
 					-- change state conditions
 					IF b1_stable = '1' THEN
@@ -102,6 +103,7 @@ BEGIN
 						alarm_led <= '1';
 						next_state <= ALARM_TRIGGERED;
 					END IF;
+                    
 				WHEN SETTING_TIME =>
 					-- increment time
 					IF b2_pressed = '1' THEN
@@ -132,20 +134,10 @@ BEGIN
 					ELSE
 						next_state <= SETTING_TIME;
 					END IF;
+                    
 				WHEN SETTING_ALARM =>
                 	-- increment alarm time
 					IF b2_pressed = '1' THEN
-						IF alarm_m_u = 9 AND alarm_m_d = 5 THEN
-							alarm_m_u <= 0;
-							alarm_m_d <= 0;
-						ELSIF alarm_m_u = 9 THEN
-							alarm_m_u <= 0;
-							alarm_m_d <= alarm_m_d + 1;
-						ELSE
-							alarm_m_u <= alarm_m_u + 1;
-						END IF;
-					END IF;
-					IF b3_pressed = '1' THEN
 						IF alarm_h_d = 2 AND alarm_h_u = 3 THEN
 							alarm_h_d <= 0;
 							alarm_h_u <= 0;
@@ -156,11 +148,22 @@ BEGIN
 							alarm_h_u <= alarm_h_u + 1;
 						END IF;
 					END IF;
+                    IF b3_pressed = '1' THEN
+						IF alarm_m_u = 9 AND alarm_m_d = 5 THEN
+							alarm_m_u <= 0;
+							alarm_m_d <= 0;
+						ELSIF alarm_m_u = 9 THEN
+							alarm_m_u <= 0;
+							alarm_m_d <= alarm_m_d + 1;
+						ELSE
+							alarm_m_u <= alarm_m_u + 1;
+						END IF;
+					END IF;
 					-- change state conditions
-					IF b4_stable = '1' THEN
+					IF b1_stable = '1' THEN -- exit the alarm setting saving the changes
 						alarm_active <= '1';
 						next_state <= STANDBY;
-					ELSIF b2_stable = '1' THEN
+					ELSIF b2_stable = '1' THEN -- exit the alarm without setting saving the changes
 						alarm_active <= '0';
 						next_state <= STANDBY;
 					ELSE
