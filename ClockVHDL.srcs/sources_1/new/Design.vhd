@@ -11,25 +11,27 @@ ENTITY clock IS
 END clock;
 
 ARCHITECTURE hardware OF clock IS
+    
+    -- CDB clock
 	SIGNAL count_sec : INTEGER RANGE 0 TO 60; -- seconds counter (0 to 59)
 	SIGNAL count_clock : INTEGER RANGE 0 TO 9; -- clock cycles counter (0 to 9)
-	-- SIGNAL m_u, alarm_m_u : INTEGER RANGE 0 TO 9; -- minutes units (0 to 9)
-	-- SIGNAL m_d, alarm_m_d : INTEGER RANGE 0 TO 5; -- minutes tens (0 to 5)
-	-- SIGNAL h_u, alarm_h_u : INTEGER RANGE 0 TO 9; -- hours units (0 to 9)
-	-- SIGNAL h_d, alarm_h_d : INTEGER RANGE 0 TO 2; -- hours tens (0 to 2)
 	SIGNAL m_u : INTEGER RANGE 0 TO 9; -- minutes units (0 to 9)
 	SIGNAL m_d : INTEGER RANGE 0 TO 5; -- minutes tens (0 to 5)
 	SIGNAL h_u : INTEGER RANGE 0 TO 9; -- hours units (0 to 9)
 	SIGNAL h_d : INTEGER RANGE 0 TO 2; -- hours tens (0 to 2)
+    
+    -- Alarm
 	SIGNAL alarm_m_u : INTEGER RANGE 0 TO 9; -- alarm minutes units (0 to 9)
 	SIGNAL alarm_m_d : INTEGER RANGE 0 TO 5; -- alarm minutes tens (0 to 5)
 	SIGNAL alarm_h_u : INTEGER RANGE 0 TO 9; -- alarm hours units (0 to 9)
 	SIGNAL alarm_h_d : INTEGER RANGE 0 TO 2; -- alarm hours tens (0 to 2)
 	SIGNAL alarm_led, alarm_active : std_logic := '0';
-	SIGNAL CURRENT_DIGIT : INTEGER RANGE 0 TO 1; -- digit selection for setting mode
-	SIGNAL b2_pressed, b3_pressed : std_logic := '0';
-	SIGNAL b1_last, b2_last, b3_last, b4_last : std_logic := '0';
-	SIGNAL b1_stable, b2_stable, b4_stable : std_logic := '0';
+    
+    -- Button debouncing
+	SIGNAL b1_pressed, b2_pressed, b3_pressed, b4_pressed : std_logic := '0';
+	SIGNAL b1_last, b2_last, b3_last, b4_last : std_logic := '0'; 
+	SIGNAL b1_stable, b2_stable, b3_stable, b4_stable : std_logic := '0';
+    
 	-- State definitions
 	CONSTANT STANDBY : INTEGER := 0;
 	CONSTANT SETTING_TIME : INTEGER := 1;
@@ -49,7 +51,6 @@ BEGIN
 			m_d <= 0;
 			h_u <= 0;
 			h_d <= 0;
-			CURRENT_DIGIT <= 0;
 			alarm_active <= '0';
 			alarm_h_u <= 0;
 			alarm_h_d <= 0;
@@ -61,6 +62,7 @@ BEGIN
 			
             -- State transitions
 			current_state <= next_state;
+            
 			-- Count seconds and increment digits accordingly
 			IF count_clock = 9 THEN
 				count_sec <= count_sec + 1;
@@ -177,6 +179,7 @@ BEGIN
 					ELSE
 						next_state <= SETTING_ALARM;
 					END IF;
+                    
 				WHEN ALARM_TRIGGERED =>
                 	-- alarm goes on
 					alarm_led <= '1';
@@ -193,17 +196,21 @@ BEGIN
 	END PROCESS;
     
     
-	-- Separate debouncing process for buttons
+	-- Debouncing for buttons
 	DEBOUNCE_PROCESS : PROCESS (clk, rst)
 		VARIABLE hold_b1_time : INTEGER := 0;
 		VARIABLE hold_b2_time : INTEGER := 0;
+		VARIABLE hold_b3_time : INTEGER := 0;
 		VARIABLE hold_b4_time : INTEGER := 0;
 	BEGIN
 		IF rst = '1' THEN
+			b1_pressed <= '0';
 			b2_pressed <= '0';
 			b3_pressed <= '0';
+			b4_pressed <= '0';
 			b1_stable <= '0';
 			b2_stable <= '0';
+			b3_stable <= '0';
 			b4_stable <= '0';
 			b1_last <= '0';
 			b2_last <= '0';
@@ -211,32 +218,32 @@ BEGIN
 			b4_last <= '0';
 		ELSIF rising_edge(clk) THEN
         
-			b3_last <= b3;
-			IF b3 = '1' AND b3_last = '0' THEN
-				b3_pressed <= '1';
-			ELSE
-				b3_pressed <= '0';
-			END IF;
-            
+			b1_last <= b1;
 			b2_last <= b2;
-			IF b2 = '1' AND b2_last = '0' THEN
-				b2_pressed <= '1';
-			ELSE
-				b2_pressed <= '0';
-			END IF;
+			b3_last <= b3;
+			b4_last <= b4;
             
+            -- button b1
 			IF b1 = '1' THEN
+            	-- check if button is stable (pressed more than 2s)
 				hold_b1_time := hold_b1_time + 1;
 				IF hold_b1_time >= 19 THEN
 					b1_stable <= '1';
 				ELSE
 					b1_stable <= '0';
 				END IF;
+                -- check dobouncing
+                IF b1_last = '0' THEN
+                    b1_pressed <= '1';
+                ELSE
+                    b1_pressed <= '0';
+                END IF;
 			ELSE
 				hold_b1_time := 0;
 				b1_stable <= '0';
 			END IF;
             
+            -- button b2
             IF b2 = '1' THEN
 				hold_b2_time := hold_b2_time + 1;
 				IF hold_b2_time >= 19 THEN
@@ -244,11 +251,38 @@ BEGIN
 				ELSE
 					b2_stable <= '0';
 				END IF;
+                -- check dobouncing
+                IF b2_last = '0' THEN
+                    b2_pressed <= '1';
+                ELSE
+                    b2_pressed <= '0';
+                END IF;
 			ELSE
 				hold_b2_time := 0;
 				b2_stable <= '0';
 			END IF;
             
+            -- Button b3
+			IF b3 = '1' THEN
+				hold_b3_time := hold_b3_time + 1;
+				IF hold_b3_time >= 19 THEN
+					b3_stable <= '1';
+				ELSE
+					b3_stable <= '0';
+				END IF;
+                -- check dobouncing
+                IF b3_last = '0' THEN
+                    b3_pressed <= '1';
+                ELSE
+                    b3_pressed <= '0';
+                END IF;
+			ELSE
+				hold_b3_time := 0;
+				b3_stable <= '0';
+			END IF;
+            
+            
+            -- Button b4
 			IF b4 = '1' THEN
 				hold_b4_time := hold_b4_time + 1;
 				IF hold_b4_time >= 19 THEN
@@ -256,10 +290,18 @@ BEGIN
 				ELSE
 					b4_stable <= '0';
 				END IF;
+                -- check dobouncing
+                IF b4_last = '0' THEN
+                    b4_pressed <= '1';
+                ELSE
+                    b4_pressed <= '0';
+                END IF;
 			ELSE
 				hold_b4_time := 0;
 				b4_stable <= '0';
 			END IF;
+            
+            
 		END IF;
 	END PROCESS DEBOUNCE_PROCESS;
     
@@ -364,6 +406,7 @@ BEGIN
                     END CASE;
                     
 				WHEN SETTING_TIME =>
+                	-- Blinking
 					IF count_clock >= 5 THEN
 						d1 <= "1111111";
 						d2 <= "1111111";
