@@ -13,10 +13,18 @@ END clock;
 ARCHITECTURE hardware OF clock IS
 	SIGNAL count_sec : INTEGER RANGE 0 TO 60; -- seconds counter (0 to 59)
 	SIGNAL count_clock : INTEGER RANGE 0 TO 9; -- clock cycles counter (0 to 9)
-	SIGNAL m_u, alarm_m_u : INTEGER RANGE 0 TO 9; -- minutes units (0 to 9)
-	SIGNAL m_d, alarm_m_d : INTEGER RANGE 0 TO 5; -- minutes tens (0 to 5)
-	SIGNAL h_u, alarm_h_u : INTEGER RANGE 0 TO 9; -- hours units (0 to 9)
-	SIGNAL h_d, alarm_h_d : INTEGER RANGE 0 TO 2; -- hours tens (0 to 2)
+	-- SIGNAL m_u, alarm_m_u : INTEGER RANGE 0 TO 9; -- minutes units (0 to 9)
+	-- SIGNAL m_d, alarm_m_d : INTEGER RANGE 0 TO 5; -- minutes tens (0 to 5)
+	-- SIGNAL h_u, alarm_h_u : INTEGER RANGE 0 TO 9; -- hours units (0 to 9)
+	-- SIGNAL h_d, alarm_h_d : INTEGER RANGE 0 TO 2; -- hours tens (0 to 2)
+	SIGNAL m_u : INTEGER RANGE 0 TO 9; -- minutes units (0 to 9)
+	SIGNAL m_d : INTEGER RANGE 0 TO 5; -- minutes tens (0 to 5)
+	SIGNAL h_u : INTEGER RANGE 0 TO 9; -- hours units (0 to 9)
+	SIGNAL h_d : INTEGER RANGE 0 TO 2; -- hours tens (0 to 2)
+	SIGNAL alarm_m_u : INTEGER RANGE 0 TO 9; -- alarm minutes units (0 to 9)
+	SIGNAL alarm_m_d : INTEGER RANGE 0 TO 5; -- alarm minutes tens (0 to 5)
+	SIGNAL alarm_h_u : INTEGER RANGE 0 TO 9; -- alarm hours units (0 to 9)
+	SIGNAL alarm_h_d : INTEGER RANGE 0 TO 2; -- alarm hours tens (0 to 2)
 	SIGNAL alarm_led, alarm_active : std_logic := '0';
 	SIGNAL CURRENT_DIGIT : INTEGER RANGE 0 TO 1; -- digit selection for setting mode
 	SIGNAL b2_pressed, b3_pressed : std_logic := '0';

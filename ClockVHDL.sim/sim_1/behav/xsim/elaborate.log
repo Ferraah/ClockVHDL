@@ -1,7 +1,17 @@
 Vivado Simulator v2022.2
 Copyright 1986-1999, 2001-2022 Xilinx, Inc. All Rights Reserved.
-Running: /home/df/.var/app/com.github.corna.Vivado/data/xilinx-install/Vivado/2022.2/bin/unwrapped/lnx64.o/xelab --incr --debug typical --relax --mt 8 -L xil_defaultlib -L secureip --snapshot tb_clock_behav xil_defaultlib.tb_clock -log elaborate.log 
+Running: /home/df/.var/app/com.github.corna.Vivado/data/xilinx-install/Vivado/2022.2/bin/unwrapped/lnx64.o/xelab --incr --debug typical --relax --mt 8 -L xil_defaultlib -L secureip --snapshot normal_mode_tb_behav xil_defaultlib.normal_mode_tb -log elaborate.log 
 Using 8 slave threads.
 Starting static elaboration
 Completed static elaboration
-INFO: [XSIM 43-4323] No Change in HDL. Linking previously generated obj files to create kernel
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling package std.standard
+Compiling package std.textio
+Compiling package ieee.std_logic_1164
+Compiling package ieee.std_logic_arith
+Compiling package ieee.std_logic_unsigned
+Compiling architecture hardware of entity xil_defaultlib.clock [clock_default]
+Compiling architecture testbench of entity xil_defaultlib.normal_mode_tb
+Built simulation snapshot normal_mode_tb_behav
