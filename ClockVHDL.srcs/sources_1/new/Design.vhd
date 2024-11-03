@@ -31,7 +31,6 @@ ARCHITECTURE hardware OF clock IS
 	SIGNAL alarm_led, alarm_active : std_logic := '0';
     
     -- Button debouncing
-	SIGNAL b1_pressed, b2_pressed, b3_pressed, b4_pressed : std_logic := '0';
 	SIGNAL b1_last, b2_last, b3_last, b4_last : std_logic := '0'; 
 	SIGNAL b1_stable, b2_stable, b3_stable, b4_stable : std_logic := '0';
     
@@ -127,7 +126,7 @@ BEGIN
                     
 				WHEN SETTING_TIME =>
 					-- increment time
-					IF b2_pressed = '1' THEN
+					IF b2 = '1' AND b2_last = '0' THEN
 						IF h_d = 2 AND h_u = 3 THEN
 							h_d <= 0;
 							h_u <= 0;
@@ -138,7 +137,7 @@ BEGIN
 							h_u <= h_u + 1;
 						END IF;
 					END IF;
-					IF b3_pressed = '1' THEN
+					IF b3 = '1' AND b3_last = '0' THEN
 						IF m_u = 9 AND m_d = 5 THEN
 							m_u <= 0;
 							m_d <= 0;
@@ -158,7 +157,7 @@ BEGIN
                     
 				WHEN SETTING_ALARM =>
                 	-- increment alarm time
-					IF b2_pressed = '1' THEN
+					IF b2 = '1' AND b2_last = '0' THEN
 						IF alarm_h_d = 2 AND alarm_h_u = 3 THEN
 							alarm_h_d <= 0;
 							alarm_h_u <= 0;
@@ -169,7 +168,7 @@ BEGIN
 							alarm_h_u <= alarm_h_u + 1;
 						END IF;
 					END IF;
-                    IF b3_pressed = '1' THEN
+                    IF b3 = '1' AND b3_last = '0' THEN
 						IF alarm_m_u = 9 AND alarm_m_d = 5 THEN
 							alarm_m_u <= 0;
 							alarm_m_d <= 0;
@@ -215,10 +214,6 @@ BEGIN
 		VARIABLE hold_b4_time : INTEGER := 0;
 	BEGIN
 		IF rst = '1' THEN
-			b1_pressed <= '0';
-			b2_pressed <= '0';
-			b3_pressed <= '0';
-			b4_pressed <= '0';
 			b1_stable <= '0';
 			b2_stable <= '0';
 			b3_stable <= '0';
@@ -243,12 +238,6 @@ BEGIN
 				ELSE
 					b1_stable <= '0';
 				END IF;
-                -- check dobouncing
-                IF b1_last = '0' THEN
-                    b1_pressed <= '1';
-                ELSE
-                    b1_pressed <= '0';
-                END IF;
 			ELSE
 				hold_b1_time := 0;
 				b1_stable <= '0';
@@ -262,12 +251,6 @@ BEGIN
 				ELSE
 					b2_stable <= '0';
 				END IF;
-                -- check dobouncing
-                IF b2_last = '0' THEN
-                    b2_pressed <= '1';
-                ELSE
-                    b2_pressed <= '0';
-                END IF;
 			ELSE
 				hold_b2_time := 0;
 				b2_stable <= '0';
@@ -281,12 +264,7 @@ BEGIN
 				ELSE
 					b3_stable <= '0';
 				END IF;
-                -- check dobouncing
-                IF b3_last = '0' THEN
-                    b3_pressed <= '1';
-                ELSE
-                    b3_pressed <= '0';
-                END IF;
+   
 			ELSE
 				hold_b3_time := 0;
 				b3_stable <= '0';
@@ -301,12 +279,7 @@ BEGIN
 				ELSE
 					b4_stable <= '0';
 				END IF;
-                -- check dobouncing
-                IF b4_last = '0' THEN
-                    b4_pressed <= '1';
-                ELSE
-                    b4_pressed <= '0';
-                END IF;
+                
 			ELSE
 				hold_b4_time := 0;
 				b4_stable <= '0';

@@ -1,2 +1,1 @@
 Breakpoint File Version 1.0
-82,true,"/home/df/Documenti/Universita/FPGA/ClockVHDL/ClockVHDL.srcs/sim_1/new/setting_mode_tb.vhd"

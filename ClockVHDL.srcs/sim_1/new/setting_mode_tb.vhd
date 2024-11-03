@@ -79,8 +79,8 @@ begin
         -- Increment hours 24 times
         for i in 0 to 23 loop
 
-            assert h_u = ((i/60) mod 10) report "Incorrect hours units" severity error;
-            assert h_d = ((i/600) mod 4) report "Incorrect hours tens" severity error;
+            assert h_u = (i mod 10) report "Incorrect hours units" severity error;
+            assert h_d = (i/10) report "Incorrect hours tens" severity error;
 
             b2 <= '1';
             wait for clk_period;
