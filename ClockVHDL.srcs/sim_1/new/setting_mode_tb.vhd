@@ -18,6 +18,8 @@ architecture testbench of clock_tb is
     -- Output 7-segment display signals
     signal d1, d2, d3, d4 : std_logic_vector(6 downto 0);
 
+    constant clk_period : time := 20 ns; -- 20 ns per clock cycle
+
     -- Clock instance
     component clock
         port (
@@ -57,40 +59,40 @@ begin
     begin
         -- Reset the clock
         rst <= '1';
-        wait for 20 ns;
+        wait for clk_period;
         rst <= '0';
         wait for 1000 ns;
+        
         -- Enter SETTING_MODE by pressing `b1` for more than 2s
         b1 <= '1';
-        wait for 400 ns; -- Hold `b1` for 20 cycles to toggle setting mode
+        wait for clk_period*20; -- Hold `b1` for 20 cycles to toggle setting mode
         b1 <= '0';
-        wait for 20 ns; -- Allow `SETTING_MODE` to stabilize
+        wait for clk_period; -- Allow `SETTING_MODE` to stabilize
 
-        -- Set minutes to 59 using button press and release for each increment
-        -- Set minutes (units) to 9
-        for i in 1 to 20 loop
-            b3 <= '1';
-            wait for 20 ns;
-            b3 <= '0'; -- Release b3 to simulate button lock
-            wait for 400 ns; -- Delay to ensure only one increment per press
-        end loop;
-         for i in 1 to 5 loop
+        for i in 1 to 24 loop
             b2 <= '1';
-            wait for 80 ns;
+            wait for clk_period;
             b2 <= '0'; -- Release b3 to simulate button lock
-            wait for 800 ns; -- Delay to ensure only one increment per press
+            wait for clk_period; -- Delay to ensure only one increment per press
+        end loop;
+        
+        for i in 1 to 60 loop
+            b3 <= '1';
+            wait for clk_period;
+            b3 <= '0'; -- Release b3 to simulate button lock
+            wait for clk_period; -- Delay to ensure only one increment per press
         end loop;
 
-        -- test debouncing
-        b2 <= '1';
-        wait for 200 ns;
-        b2 <= '0';
-        wait for 200 ns;
+--        -- test debouncing
+--        b2 <= '1';
+--        wait for 200 ns;
+--        b2 <= '0';
+--        wait for 200 ns;
 
     
         -- Exit setting mode by holding `b4` for 20 clock cycles again
         b4 <= '1';
-        wait for 400 ns; -- Hold `b1` to toggle setting mode off
+        wait for clk_period*20; -- Hold `b1` to toggle setting mode off
         b4 <= '0';
 
         -- Additional checks can be added here to verify final output values for `d1`, `d2`, `d3`, and `d4`
