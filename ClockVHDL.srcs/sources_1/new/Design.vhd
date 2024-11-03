@@ -6,7 +6,8 @@ ENTITY clock IS
 	PORT (
 		clk, rst : IN std_logic;
 		b1, b2, b3, b4 : IN std_logic; -- Buttons
-		d1, d2, d3, d4 : OUT std_logic_vector(6 DOWNTO 0) -- 7-segment display outputs
+		d1, d2, d3, d4 : OUT std_logic_vector(6 DOWNTO 0); -- 7-segment display outputs
+		check_m_u, check_m_d, check_h_u, check_h_d : OUT INTEGER RANGE 0 TO 9 -- Check time values 	
 	);
 END clock;
 
@@ -15,6 +16,8 @@ ARCHITECTURE hardware OF clock IS
     -- CDB clock
 	SIGNAL count_sec : INTEGER RANGE 0 TO 60; -- seconds counter (0 to 59)
 	SIGNAL count_clock : INTEGER RANGE 0 TO 9; -- clock cycles counter (0 to 9)
+
+	-- !! Uncomment in production
 	SIGNAL m_u : INTEGER RANGE 0 TO 9; -- minutes units (0 to 9)
 	SIGNAL m_d : INTEGER RANGE 0 TO 5; -- minutes tens (0 to 5)
 	SIGNAL h_u : INTEGER RANGE 0 TO 9; -- hours units (0 to 9)
@@ -40,6 +43,14 @@ ARCHITECTURE hardware OF clock IS
 	SIGNAL current_state, next_state : INTEGER RANGE 0 TO 3 := STANDBY;
 BEGIN
 
+	-- To debug
+	PROCESS(m_u, m_d, h_u, h_d)
+	BEGIN
+		check_m_u <= m_u;
+		check_m_d <= m_d;
+		check_h_u <= h_u;
+		check_h_d <= h_d;
+	END PROCESS;
 
 	-- Main process
 	PROCESS (clk, rst)
