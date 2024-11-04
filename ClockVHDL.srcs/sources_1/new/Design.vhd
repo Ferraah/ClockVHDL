@@ -7,7 +7,9 @@ ENTITY clock IS
 		clk, rst : IN std_logic;
 		b1, b2, b3, b4 : IN std_logic; -- Buttons
 		d1, d2, d3, d4 : OUT std_logic_vector(6 DOWNTO 0); -- 7-segment display outputs
-		check_m_u, check_m_d, check_h_u, check_h_d : OUT INTEGER RANGE 0 TO 9 -- Check time values 	
+		check_m_u, check_m_d, check_h_u, check_h_d : OUT INTEGER RANGE 0 TO 9; -- Check time values 	
+		check_alarm_active : OUT std_logic; -- Check alarm active signal
+		alarm_led : OUT std_logic -- Alarm LED
 	);
 END clock;
 
@@ -28,7 +30,7 @@ ARCHITECTURE hardware OF clock IS
 	SIGNAL alarm_m_d : INTEGER RANGE 0 TO 5; -- alarm minutes tens (0 to 5)
 	SIGNAL alarm_h_u : INTEGER RANGE 0 TO 9; -- alarm hours units (0 to 9)
 	SIGNAL alarm_h_d : INTEGER RANGE 0 TO 2; -- alarm hours tens (0 to 2)
-	SIGNAL alarm_led, alarm_active : std_logic := '0';
+	SIGNAL alarm_active : std_logic := '0';
     
     -- Button debouncing
 	SIGNAL b1_last, b2_last, b3_last, b4_last : std_logic := '0'; 
@@ -40,15 +42,17 @@ ARCHITECTURE hardware OF clock IS
 	CONSTANT SETTING_ALARM : INTEGER := 2;
 	CONSTANT ALARM_TRIGGERED : INTEGER := 3;
 	SIGNAL current_state, next_state : INTEGER RANGE 0 TO 3 := STANDBY;
+	
 BEGIN
 
 	-- To debug
-	PROCESS(m_u, m_d, h_u, h_d)
+	PROCESS(m_u, m_d, h_u, h_d, alarm_active)
 	BEGIN
 		check_m_u <= m_u;
 		check_m_d <= m_d;
 		check_h_u <= h_u;
 		check_h_d <= h_d;
+		check_alarm_active <= alarm_active;
 	END PROCESS;
 
 	-- Main process
@@ -62,11 +66,11 @@ BEGIN
 			h_u <= 0;
 			h_d <= 0;
 			alarm_active <= '0';
+			alarm_led <= '0';
 			alarm_h_u <= 0;
 			alarm_h_d <= 0;
 			alarm_m_u <= 0;
 			alarm_m_d <= 0;
-			alarm_led <= '0';
 			current_state <= STANDBY;
 		ELSIF rising_edge(clk) THEN
 			

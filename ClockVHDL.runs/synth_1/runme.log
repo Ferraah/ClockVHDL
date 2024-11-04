@@ -9,7 +9,7 @@
     ** Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
 
 source clock.tcl -notrace
-create_project: Time (s): cpu = 00:00:06 ; elapsed = 00:00:06 . Memory (MB): peak = 1321.844 ; gain = 0.023 ; free physical = 4735 ; free virtual = 29743
+create_project: Time (s): cpu = 00:00:05 ; elapsed = 00:00:05 . Memory (MB): peak = 1322.527 ; gain = 0.023 ; free physical = 4460 ; free virtual = 29470
 Command: read_checkpoint -auto_incremental -incremental /home/df/Documenti/Universita/FPGA/ClockVHDL/ClockVHDL.srcs/utils_1/imports/synth_1/clock.dcp
 INFO: [Vivado 12-5825] Read reference checkpoint from /home/df/Documenti/Universita/FPGA/ClockVHDL/ClockVHDL.srcs/utils_1/imports/synth_1/clock.dcp for incremental synthesis
 INFO: [Vivado 12-7989] Please ensure there are no constraint changes
@@ -21,26 +21,33 @@ INFO: [Designutils 20-5440] No compile time benefit to using incremental synthes
 INFO: [Designutils 20-4379] Flow is switching to default flow due to incremental criteria not met. If you would like to alter this behaviour and have the flow terminate instead, please set the following parameter config_implementation {autoIncr.Synth.RejectBehavior Terminate}
 INFO: [Synth 8-7079] Multithreading enabled for synth_design using a maximum of 4 processes.
 INFO: [Synth 8-7078] Launching helper process for spawning children vivado processes
-INFO: [Synth 8-7075] Helper process launched with PID 373
+INFO: [Synth 8-7075] Helper process launched with PID 883
 INFO: [Synth 8-11241] undeclared symbol 'REGCCE', assumed default net type 'wire' [/home/df/.var/app/com.github.corna.Vivado/data/xilinx-install/Vivado/2022.2/data/verilog/src/unimacro/BRAM_SINGLE_MACRO.v:2170]
 ---------------------------------------------------------------------------------
-Starting Synthesize : Time (s): cpu = 00:00:04 ; elapsed = 00:00:04 . Memory (MB): peak = 1642.676 ; gain = 320.832 ; free physical = 4182 ; free virtual = 29194
-Synthesis current peak Physical Memory [PSS] (MB): peak = 1063.443; parent = 859.491; children = 203.952
-Synthesis current peak Virtual Memory [VSS] (MB): peak = 2607.922; parent = 1642.680; children = 965.242
+Starting Synthesize : Time (s): cpu = 00:00:04 ; elapsed = 00:00:04 . Memory (MB): peak = 1642.359 ; gain = 319.832 ; free physical = 3652 ; free virtual = 28668
+Synthesis current peak Physical Memory [PSS] (MB): peak = 1066.245; parent = 860.878; children = 205.367
+Synthesis current peak Virtual Memory [VSS] (MB): peak = 2607.605; parent = 1642.363; children = 965.242
 ---------------------------------------------------------------------------------
-INFO: [Synth 8-638] synthesizing module 'clock' [/home/df/Documenti/Universita/FPGA/ClockVHDL/ClockVHDL.srcs/sources_1/new/Design.vhd:11]
-INFO: [Synth 8-256] done synthesizing module 'clock' (0#1) [/home/df/Documenti/Universita/FPGA/ClockVHDL/ClockVHDL.srcs/sources_1/new/Design.vhd:11]
-WARNING: [Synth 8-6014] Unused sequential element alarm_led_reg was removed.  [/home/df/Documenti/Universita/FPGA/ClockVHDL/ClockVHDL.srcs/sources_1/new/Design.vhd:58]
-WARNING: [Synth 8-6014] Unused sequential element alarm_active_reg was removed.  [/home/df/Documenti/Universita/FPGA/ClockVHDL/ClockVHDL.srcs/sources_1/new/Design.vhd:53]
+INFO: [Synth 8-638] synthesizing module 'clock' [/home/df/Documenti/Universita/FPGA/ClockVHDL/ClockVHDL.srcs/sources_1/new/Design.vhd:15]
+INFO: [Synth 8-226] default block is never used [/home/df/Documenti/Universita/FPGA/ClockVHDL/ClockVHDL.srcs/sources_1/new/Design.vhd:299]
+WARNING: [Synth 8-614] signal 'current_state' is read in the process but is not in the sensitivity list [/home/df/Documenti/Universita/FPGA/ClockVHDL/ClockVHDL.srcs/sources_1/new/Design.vhd:297]
+INFO: [Synth 8-256] done synthesizing module 'clock' (0#1) [/home/df/Documenti/Universita/FPGA/ClockVHDL/ClockVHDL.srcs/sources_1/new/Design.vhd:15]
+WARNING: [Synth 8-6014] Unused sequential element alarm_led_reg was removed.  [/home/df/Documenti/Universita/FPGA/ClockVHDL/ClockVHDL.srcs/sources_1/new/Design.vhd:72]
+WARNING: [Synth 8-6014] Unused sequential element b1_last_reg was removed.  [/home/df/Documenti/Universita/FPGA/ClockVHDL/ClockVHDL.srcs/sources_1/new/Design.vhd:224]
+WARNING: [Synth 8-6014] Unused sequential element b4_last_reg was removed.  [/home/df/Documenti/Universita/FPGA/ClockVHDL/ClockVHDL.srcs/sources_1/new/Design.vhd:227]
+WARNING: [Synth 8-6014] Unused sequential element b3_stable_reg was removed.  [/home/df/Documenti/Universita/FPGA/ClockVHDL/ClockVHDL.srcs/sources_1/new/Design.vhd:222]
+WARNING: [Synth 8-3917] design clock has port check_m_d[3] driven by constant 0
+WARNING: [Synth 8-3917] design clock has port check_h_d[3] driven by constant 0
+WARNING: [Synth 8-3917] design clock has port check_h_d[2] driven by constant 0
 ---------------------------------------------------------------------------------
-Finished Synthesize : Time (s): cpu = 00:00:05 ; elapsed = 00:00:06 . Memory (MB): peak = 1714.645 ; gain = 392.801 ; free physical = 4246 ; free virtual = 29261
-Synthesis current peak Physical Memory [PSS] (MB): peak = 1063.443; parent = 859.491; children = 205.429
-Synthesis current peak Virtual Memory [VSS] (MB): peak = 2679.891; parent = 1714.648; children = 965.242
+Finished Synthesize : Time (s): cpu = 00:00:06 ; elapsed = 00:00:06 . Memory (MB): peak = 1713.328 ; gain = 390.801 ; free physical = 3745 ; free virtual = 28769
+Synthesis current peak Physical Memory [PSS] (MB): peak = 1066.245; parent = 860.878; children = 205.367
+Synthesis current peak Virtual Memory [VSS] (MB): peak = 2678.574; parent = 1713.332; children = 965.242
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Constraint Validation : Time (s): cpu = 00:00:06 ; elapsed = 00:00:06 . Memory (MB): peak = 1729.488 ; gain = 407.645 ; free physical = 4242 ; free virtual = 29258
-Synthesis current peak Physical Memory [PSS] (MB): peak = 1063.443; parent = 859.491; children = 205.429
-Synthesis current peak Virtual Memory [VSS] (MB): peak = 2694.734; parent = 1729.492; children = 965.242
+Finished Constraint Validation : Time (s): cpu = 00:00:06 ; elapsed = 00:00:07 . Memory (MB): peak = 1728.172 ; gain = 405.645 ; free physical = 3746 ; free virtual = 28770
+Synthesis current peak Physical Memory [PSS] (MB): peak = 1066.245; parent = 860.878; children = 205.367
+Synthesis current peak Virtual Memory [VSS] (MB): peak = 2693.418; parent = 1728.176; children = 965.242
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Loading Part and Timing Information
@@ -48,18 +55,24 @@ Start Loading Part and Timing Information
 Loading part: xc7k70tfbv676-1
 INFO: [Device 21-403] Loading part xc7k70tfbv676-1
 ---------------------------------------------------------------------------------
-Finished Loading Part and Timing Information : Time (s): cpu = 00:00:06 ; elapsed = 00:00:07 . Memory (MB): peak = 1737.492 ; gain = 415.648 ; free physical = 4242 ; free virtual = 29259
-Synthesis current peak Physical Memory [PSS] (MB): peak = 1063.443; parent = 859.491; children = 205.429
-Synthesis current peak Virtual Memory [VSS] (MB): peak = 2702.738; parent = 1737.496; children = 965.242
+Finished Loading Part and Timing Information : Time (s): cpu = 00:00:06 ; elapsed = 00:00:07 . Memory (MB): peak = 1736.176 ; gain = 413.648 ; free physical = 3746 ; free virtual = 28770
+Synthesis current peak Physical Memory [PSS] (MB): peak = 1066.245; parent = 860.878; children = 205.367
+Synthesis current peak Virtual Memory [VSS] (MB): peak = 2701.422; parent = 1736.180; children = 965.242
 ---------------------------------------------------------------------------------
-WARNING: [Synth 8-327] inferring latch for variable 'd1_reg' [/home/df/Documenti/Universita/FPGA/ClockVHDL/ClockVHDL.srcs/sources_1/new/Design.vhd:246]
-WARNING: [Synth 8-327] inferring latch for variable 'd2_reg' [/home/df/Documenti/Universita/FPGA/ClockVHDL/ClockVHDL.srcs/sources_1/new/Design.vhd:259]
-WARNING: [Synth 8-327] inferring latch for variable 'd3_reg' [/home/df/Documenti/Universita/FPGA/ClockVHDL/ClockVHDL.srcs/sources_1/new/Design.vhd:268]
-WARNING: [Synth 8-327] inferring latch for variable 'd4_reg' [/home/df/Documenti/Universita/FPGA/ClockVHDL/ClockVHDL.srcs/sources_1/new/Design.vhd:281]
+INFO: [Synth 8-802] inferred FSM for state register 'current_state_reg' in module 'clock'
+---------------------------------------------------------------------------------------------------
+                   State |                     New Encoding |                Previous Encoding 
+---------------------------------------------------------------------------------------------------
+                 standby |                               00 |                               00
+         alarm_triggered |                               01 |                               11
+            setting_time |                               10 |                               01
+           setting_alarm |                               11 |                               10
+---------------------------------------------------------------------------------------------------
+INFO: [Synth 8-3354] encoded FSM with state register 'current_state_reg' using encoding 'sequential' in module 'clock'
 ---------------------------------------------------------------------------------
-Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:07 ; elapsed = 00:00:07 . Memory (MB): peak = 1751.438 ; gain = 429.594 ; free physical = 4203 ; free virtual = 29222
-Synthesis current peak Physical Memory [PSS] (MB): peak = 1063.443; parent = 859.491; children = 205.429
-Synthesis current peak Virtual Memory [VSS] (MB): peak = 2716.684; parent = 1751.441; children = 965.242
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:07 ; elapsed = 00:00:07 . Memory (MB): peak = 1753.090 ; gain = 430.562 ; free physical = 3734 ; free virtual = 28760
+Synthesis current peak Physical Memory [PSS] (MB): peak = 1066.245; parent = 860.878; children = 205.367
+Synthesis current peak Virtual Memory [VSS] (MB): peak = 2718.336; parent = 1753.094; children = 965.242
 ---------------------------------------------------------------------------------
 No constraint files found.
 ---------------------------------------------------------------------------------
@@ -67,35 +80,32 @@ Start RTL Component Statistics
 ---------------------------------------------------------------------------------
 Detailed RTL Component Info : 
 +---Adders : 
-	   2 Input   32 Bit       Adders := 2     
+	   2 Input   32 Bit       Adders := 3     
 	   2 Input    6 Bit       Adders := 1     
 	   2 Input    4 Bit       Adders := 5     
-	   2 Input    3 Bit       Adders := 3     
-	   2 Input    2 Bit       Adders := 3     
+	   2 Input    3 Bit       Adders := 2     
+	   2 Input    2 Bit       Adders := 2     
 +---Registers : 
 	                6 Bit    Registers := 1     
 	                4 Bit    Registers := 5     
 	                3 Bit    Registers := 2     
-	                2 Bit    Registers := 3     
-	                1 Bit    Registers := 4     
+	                2 Bit    Registers := 2     
+	                1 Bit    Registers := 6     
 +---Muxes : 
-	   2 Input    7 Bit        Muxes := 5     
-	   8 Input    7 Bit        Muxes := 1     
-	   7 Input    7 Bit        Muxes := 1     
-	   9 Input    7 Bit        Muxes := 1     
-	   2 Input    6 Bit        Muxes := 3     
-	   4 Input    6 Bit        Muxes := 1     
-	   2 Input    4 Bit        Muxes := 19    
-	   4 Input    4 Bit        Muxes := 3     
-	   2 Input    3 Bit        Muxes := 7     
+	   4 Input    7 Bit        Muxes := 2     
+	   2 Input    7 Bit        Muxes := 4     
+	   7 Input    7 Bit        Muxes := 2     
+	   3 Input    7 Bit        Muxes := 4     
+	   2 Input    6 Bit        Muxes := 1     
+	   2 Input    4 Bit        Muxes := 13    
+	   4 Input    4 Bit        Muxes := 2     
+	   2 Input    3 Bit        Muxes := 5     
 	   4 Input    3 Bit        Muxes := 1     
-	   2 Input    2 Bit        Muxes := 9     
-	   4 Input    2 Bit        Muxes := 1     
+	   2 Input    2 Bit        Muxes := 11    
 	   3 Input    2 Bit        Muxes := 1     
-	   2 Input    1 Bit        Muxes := 77    
-	   4 Input    1 Bit        Muxes := 6     
-	   6 Input    1 Bit        Muxes := 1     
-	   7 Input    1 Bit        Muxes := 1     
+	   4 Input    2 Bit        Muxes := 3     
+	   2 Input    1 Bit        Muxes := 28    
+	   4 Input    1 Bit        Muxes := 10    
 ---------------------------------------------------------------------------------
 Finished RTL Component Statistics 
 ---------------------------------------------------------------------------------
@@ -113,27 +123,30 @@ No constraint files found.
 Start Cross Boundary and Area Optimization
 ---------------------------------------------------------------------------------
 WARNING: [Synth 8-7080] Parallel synthesis criteria is not met
+WARNING: [Synth 8-3917] design clock has port check_m_d[3] driven by constant 0
+WARNING: [Synth 8-3917] design clock has port check_h_d[3] driven by constant 0
+WARNING: [Synth 8-3917] design clock has port check_h_d[2] driven by constant 0
 ---------------------------------------------------------------------------------
-Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:12 ; elapsed = 00:00:13 . Memory (MB): peak = 1882.828 ; gain = 560.984 ; free physical = 4147 ; free virtual = 29190
-Synthesis current peak Physical Memory [PSS] (MB): peak = 1297.727; parent = 1092.332; children = 205.429
-Synthesis current peak Virtual Memory [VSS] (MB): peak = 2848.074; parent = 1882.832; children = 965.242
+Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:12 ; elapsed = 00:00:13 . Memory (MB): peak = 1880.480 ; gain = 557.953 ; free physical = 3510 ; free virtual = 28560
+Synthesis current peak Physical Memory [PSS] (MB): peak = 1298.139; parent = 1092.806; children = 205.367
+Synthesis current peak Virtual Memory [VSS] (MB): peak = 2845.727; parent = 1880.484; children = 965.242
 ---------------------------------------------------------------------------------
 No constraint files found.
 ---------------------------------------------------------------------------------
 Start Timing Optimization
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Timing Optimization : Time (s): cpu = 00:00:12 ; elapsed = 00:00:13 . Memory (MB): peak = 1882.828 ; gain = 560.984 ; free physical = 4147 ; free virtual = 29189
-Synthesis current peak Physical Memory [PSS] (MB): peak = 1298.785; parent = 1093.391; children = 205.429
-Synthesis current peak Virtual Memory [VSS] (MB): peak = 2848.074; parent = 1882.832; children = 965.242
+Finished Timing Optimization : Time (s): cpu = 00:00:12 ; elapsed = 00:00:13 . Memory (MB): peak = 1880.480 ; gain = 557.953 ; free physical = 3510 ; free virtual = 28560
+Synthesis current peak Physical Memory [PSS] (MB): peak = 1299.564; parent = 1094.231; children = 205.367
+Synthesis current peak Virtual Memory [VSS] (MB): peak = 2845.727; parent = 1880.484; children = 965.242
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Technology Mapping
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Technology Mapping : Time (s): cpu = 00:00:12 ; elapsed = 00:00:13 . Memory (MB): peak = 1882.828 ; gain = 560.984 ; free physical = 4147 ; free virtual = 29189
-Synthesis current peak Physical Memory [PSS] (MB): peak = 1300.801; parent = 1095.406; children = 205.429
-Synthesis current peak Virtual Memory [VSS] (MB): peak = 2848.074; parent = 1882.832; children = 965.242
+Finished Technology Mapping : Time (s): cpu = 00:00:12 ; elapsed = 00:00:13 . Memory (MB): peak = 1880.480 ; gain = 557.953 ; free physical = 3563 ; free virtual = 28613
+Synthesis current peak Physical Memory [PSS] (MB): peak = 1300.428; parent = 1095.095; children = 205.367
+Synthesis current peak Virtual Memory [VSS] (MB): peak = 2845.727; parent = 1880.484; children = 965.242
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start IO Insertion
@@ -151,112 +164,49 @@ Start Final Netlist Cleanup
 Finished Final Netlist Cleanup
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished IO Insertion : Time (s): cpu = 00:00:17 ; elapsed = 00:00:18 . Memory (MB): peak = 1882.828 ; gain = 560.984 ; free physical = 4194 ; free virtual = 29234
-Synthesis current peak Physical Memory [PSS] (MB): peak = 1300.965; parent = 1095.570; children = 205.429
-Synthesis current peak Virtual Memory [VSS] (MB): peak = 2848.074; parent = 1882.832; children = 965.242
+Finished IO Insertion : Time (s): cpu = 00:00:16 ; elapsed = 00:00:17 . Memory (MB): peak = 1880.480 ; gain = 557.953 ; free physical = 3590 ; free virtual = 28640
+Synthesis current peak Physical Memory [PSS] (MB): peak = 1300.549; parent = 1095.216; children = 205.367
+Synthesis current peak Virtual Memory [VSS] (MB): peak = 2845.727; parent = 1880.484; children = 965.242
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Renaming Generated Instances
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Instances : Time (s): cpu = 00:00:17 ; elapsed = 00:00:18 . Memory (MB): peak = 1882.828 ; gain = 560.984 ; free physical = 4194 ; free virtual = 29234
-Synthesis current peak Physical Memory [PSS] (MB): peak = 1300.980; parent = 1095.586; children = 205.429
-Synthesis current peak Virtual Memory [VSS] (MB): peak = 2848.074; parent = 1882.832; children = 965.242
+Finished Renaming Generated Instances : Time (s): cpu = 00:00:16 ; elapsed = 00:00:17 . Memory (MB): peak = 1880.480 ; gain = 557.953 ; free physical = 3590 ; free virtual = 28640
+Synthesis current peak Physical Memory [PSS] (MB): peak = 1300.564; parent = 1095.231; children = 205.367
+Synthesis current peak Virtual Memory [VSS] (MB): peak = 2845.727; parent = 1880.484; children = 965.242
 ---------------------------------------------------------------------------------
-CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin d1_OBUF[6] with 1st driver pin 'd1_reg[6]__0/Q' [/home/df/Documenti/Universita/FPGA/ClockVHDL/ClockVHDL.srcs/sources_1/new/Design.vhd:47]
-CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin d1_OBUF[6] with 2nd driver pin 'd1_reg[6]/Q' [/home/df/Documenti/Universita/FPGA/ClockVHDL/ClockVHDL.srcs/sources_1/new/Design.vhd:246]
-CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin d1_OBUF[5] with 1st driver pin 'd1_reg[5]__0/Q' [/home/df/Documenti/Universita/FPGA/ClockVHDL/ClockVHDL.srcs/sources_1/new/Design.vhd:47]
-CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin d1_OBUF[5] with 2nd driver pin 'd1_reg[5]/Q' [/home/df/Documenti/Universita/FPGA/ClockVHDL/ClockVHDL.srcs/sources_1/new/Design.vhd:246]
-CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin d1_OBUF[4] with 1st driver pin 'd1_reg[4]__0/Q' [/home/df/Documenti/Universita/FPGA/ClockVHDL/ClockVHDL.srcs/sources_1/new/Design.vhd:47]
-CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin d1_OBUF[4] with 2nd driver pin 'd1_reg[4]/Q' [/home/df/Documenti/Universita/FPGA/ClockVHDL/ClockVHDL.srcs/sources_1/new/Design.vhd:246]
-CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin d1_OBUF[3] with 1st driver pin 'd1_reg[3]__0/Q' [/home/df/Documenti/Universita/FPGA/ClockVHDL/ClockVHDL.srcs/sources_1/new/Design.vhd:47]
-CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin d1_OBUF[3] with 2nd driver pin 'd1_reg[3]/Q' [/home/df/Documenti/Universita/FPGA/ClockVHDL/ClockVHDL.srcs/sources_1/new/Design.vhd:246]
-CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin d1_OBUF[2] with 1st driver pin 'd1_reg[2]__0/Q' [/home/df/Documenti/Universita/FPGA/ClockVHDL/ClockVHDL.srcs/sources_1/new/Design.vhd:47]
-CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin d1_OBUF[2] with 2nd driver pin 'd1_reg[2]/Q' [/home/df/Documenti/Universita/FPGA/ClockVHDL/ClockVHDL.srcs/sources_1/new/Design.vhd:246]
-CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin d1_OBUF[1] with 1st driver pin 'd1_reg[1]__0/Q' [/home/df/Documenti/Universita/FPGA/ClockVHDL/ClockVHDL.srcs/sources_1/new/Design.vhd:47]
-CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin d1_OBUF[1] with 2nd driver pin 'd1_reg[1]/Q' [/home/df/Documenti/Universita/FPGA/ClockVHDL/ClockVHDL.srcs/sources_1/new/Design.vhd:246]
-CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin d1_OBUF[0] with 1st driver pin 'd1_reg[0]__0/Q' [/home/df/Documenti/Universita/FPGA/ClockVHDL/ClockVHDL.srcs/sources_1/new/Design.vhd:47]
-CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin d1_OBUF[0] with 2nd driver pin 'd1_reg[0]/Q' [/home/df/Documenti/Universita/FPGA/ClockVHDL/ClockVHDL.srcs/sources_1/new/Design.vhd:246]
-CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin d2_OBUF[6] with 1st driver pin 'd2_reg[6]__0/Q' [/home/df/Documenti/Universita/FPGA/ClockVHDL/ClockVHDL.srcs/sources_1/new/Design.vhd:48]
-CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin d2_OBUF[6] with 2nd driver pin 'd2_reg[6]/Q' [/home/df/Documenti/Universita/FPGA/ClockVHDL/ClockVHDL.srcs/sources_1/new/Design.vhd:259]
-CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin d2_OBUF[5] with 1st driver pin 'd2_reg[5]__0/Q' [/home/df/Documenti/Universita/FPGA/ClockVHDL/ClockVHDL.srcs/sources_1/new/Design.vhd:48]
-CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin d2_OBUF[5] with 2nd driver pin 'd2_reg[5]/Q' [/home/df/Documenti/Universita/FPGA/ClockVHDL/ClockVHDL.srcs/sources_1/new/Design.vhd:259]
-CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin d2_OBUF[4] with 1st driver pin 'd2_reg[4]__0/Q' [/home/df/Documenti/Universita/FPGA/ClockVHDL/ClockVHDL.srcs/sources_1/new/Design.vhd:48]
-CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin d2_OBUF[4] with 2nd driver pin 'd2_reg[4]/Q' [/home/df/Documenti/Universita/FPGA/ClockVHDL/ClockVHDL.srcs/sources_1/new/Design.vhd:259]
-CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin d2_OBUF[3] with 1st driver pin 'd2_reg[3]__0/Q' [/home/df/Documenti/Universita/FPGA/ClockVHDL/ClockVHDL.srcs/sources_1/new/Design.vhd:48]
-CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin d2_OBUF[3] with 2nd driver pin 'd2_reg[3]/Q' [/home/df/Documenti/Universita/FPGA/ClockVHDL/ClockVHDL.srcs/sources_1/new/Design.vhd:259]
-CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin d2_OBUF[2] with 1st driver pin 'd2_reg[2]__0/Q' [/home/df/Documenti/Universita/FPGA/ClockVHDL/ClockVHDL.srcs/sources_1/new/Design.vhd:48]
-CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin d2_OBUF[2] with 2nd driver pin 'd2_reg[2]/Q' [/home/df/Documenti/Universita/FPGA/ClockVHDL/ClockVHDL.srcs/sources_1/new/Design.vhd:259]
-CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin d2_OBUF[1] with 1st driver pin 'd2_reg[1]__0/Q' [/home/df/Documenti/Universita/FPGA/ClockVHDL/ClockVHDL.srcs/sources_1/new/Design.vhd:48]
-CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin d2_OBUF[1] with 2nd driver pin 'd2_reg[1]/Q' [/home/df/Documenti/Universita/FPGA/ClockVHDL/ClockVHDL.srcs/sources_1/new/Design.vhd:259]
-CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin d2_OBUF[0] with 1st driver pin 'd2_reg[0]__0/Q' [/home/df/Documenti/Universita/FPGA/ClockVHDL/ClockVHDL.srcs/sources_1/new/Design.vhd:48]
-CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin d2_OBUF[0] with 2nd driver pin 'd2_reg[0]/Q' [/home/df/Documenti/Universita/FPGA/ClockVHDL/ClockVHDL.srcs/sources_1/new/Design.vhd:259]
-CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin d3_OBUF[6] with 1st driver pin 'd3_reg[6]__0/Q' [/home/df/Documenti/Universita/FPGA/ClockVHDL/ClockVHDL.srcs/sources_1/new/Design.vhd:49]
-CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin d3_OBUF[6] with 2nd driver pin 'd3_reg[6]/Q' [/home/df/Documenti/Universita/FPGA/ClockVHDL/ClockVHDL.srcs/sources_1/new/Design.vhd:268]
-CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin d3_OBUF[5] with 1st driver pin 'd3_reg[5]__0/Q' [/home/df/Documenti/Universita/FPGA/ClockVHDL/ClockVHDL.srcs/sources_1/new/Design.vhd:49]
-CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin d3_OBUF[5] with 2nd driver pin 'd3_reg[5]/Q' [/home/df/Documenti/Universita/FPGA/ClockVHDL/ClockVHDL.srcs/sources_1/new/Design.vhd:268]
-CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin d3_OBUF[4] with 1st driver pin 'd3_reg[4]__0/Q' [/home/df/Documenti/Universita/FPGA/ClockVHDL/ClockVHDL.srcs/sources_1/new/Design.vhd:49]
-CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin d3_OBUF[4] with 2nd driver pin 'd3_reg[4]/Q' [/home/df/Documenti/Universita/FPGA/ClockVHDL/ClockVHDL.srcs/sources_1/new/Design.vhd:268]
-CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin d3_OBUF[3] with 1st driver pin 'd3_reg[3]__0/Q' [/home/df/Documenti/Universita/FPGA/ClockVHDL/ClockVHDL.srcs/sources_1/new/Design.vhd:49]
-CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin d3_OBUF[3] with 2nd driver pin 'd3_reg[3]/Q' [/home/df/Documenti/Universita/FPGA/ClockVHDL/ClockVHDL.srcs/sources_1/new/Design.vhd:268]
-CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin d3_OBUF[2] with 1st driver pin 'd3_reg[2]__0/Q' [/home/df/Documenti/Universita/FPGA/ClockVHDL/ClockVHDL.srcs/sources_1/new/Design.vhd:49]
-CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin d3_OBUF[2] with 2nd driver pin 'd3_reg[2]/Q' [/home/df/Documenti/Universita/FPGA/ClockVHDL/ClockVHDL.srcs/sources_1/new/Design.vhd:268]
-CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin d3_OBUF[1] with 1st driver pin 'd3_reg[1]__0/Q' [/home/df/Documenti/Universita/FPGA/ClockVHDL/ClockVHDL.srcs/sources_1/new/Design.vhd:49]
-CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin d3_OBUF[1] with 2nd driver pin 'd3_reg[1]/Q' [/home/df/Documenti/Universita/FPGA/ClockVHDL/ClockVHDL.srcs/sources_1/new/Design.vhd:268]
-CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin d3_OBUF[0] with 1st driver pin 'd3_reg[0]__0/Q' [/home/df/Documenti/Universita/FPGA/ClockVHDL/ClockVHDL.srcs/sources_1/new/Design.vhd:49]
-CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin d3_OBUF[0] with 2nd driver pin 'd3_reg[0]/Q' [/home/df/Documenti/Universita/FPGA/ClockVHDL/ClockVHDL.srcs/sources_1/new/Design.vhd:268]
-CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin d4_OBUF[6] with 1st driver pin 'd4_reg[6]__0/Q' [/home/df/Documenti/Universita/FPGA/ClockVHDL/ClockVHDL.srcs/sources_1/new/Design.vhd:50]
-CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin d4_OBUF[6] with 2nd driver pin 'd4_reg[6]/Q' [/home/df/Documenti/Universita/FPGA/ClockVHDL/ClockVHDL.srcs/sources_1/new/Design.vhd:281]
-CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin d4_OBUF[5] with 1st driver pin 'd4_reg[5]__0/Q' [/home/df/Documenti/Universita/FPGA/ClockVHDL/ClockVHDL.srcs/sources_1/new/Design.vhd:50]
-CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin d4_OBUF[5] with 2nd driver pin 'd4_reg[5]/Q' [/home/df/Documenti/Universita/FPGA/ClockVHDL/ClockVHDL.srcs/sources_1/new/Design.vhd:281]
-CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin d4_OBUF[4] with 1st driver pin 'd4_reg[4]__0/Q' [/home/df/Documenti/Universita/FPGA/ClockVHDL/ClockVHDL.srcs/sources_1/new/Design.vhd:50]
-CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin d4_OBUF[4] with 2nd driver pin 'd4_reg[4]/Q' [/home/df/Documenti/Universita/FPGA/ClockVHDL/ClockVHDL.srcs/sources_1/new/Design.vhd:281]
-CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin d4_OBUF[3] with 1st driver pin 'd4_reg[3]__0/Q' [/home/df/Documenti/Universita/FPGA/ClockVHDL/ClockVHDL.srcs/sources_1/new/Design.vhd:50]
-CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin d4_OBUF[3] with 2nd driver pin 'd4_reg[3]/Q' [/home/df/Documenti/Universita/FPGA/ClockVHDL/ClockVHDL.srcs/sources_1/new/Design.vhd:281]
-CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin d4_OBUF[2] with 1st driver pin 'd4_reg[2]__0/Q' [/home/df/Documenti/Universita/FPGA/ClockVHDL/ClockVHDL.srcs/sources_1/new/Design.vhd:50]
-CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin d4_OBUF[2] with 2nd driver pin 'd4_reg[2]/Q' [/home/df/Documenti/Universita/FPGA/ClockVHDL/ClockVHDL.srcs/sources_1/new/Design.vhd:281]
-CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin d4_OBUF[1] with 1st driver pin 'd4_reg[1]__0/Q' [/home/df/Documenti/Universita/FPGA/ClockVHDL/ClockVHDL.srcs/sources_1/new/Design.vhd:50]
-CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin d4_OBUF[1] with 2nd driver pin 'd4_reg[1]/Q' [/home/df/Documenti/Universita/FPGA/ClockVHDL/ClockVHDL.srcs/sources_1/new/Design.vhd:281]
-CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin d4_OBUF[0] with 1st driver pin 'd4_reg[0]__0/Q' [/home/df/Documenti/Universita/FPGA/ClockVHDL/ClockVHDL.srcs/sources_1/new/Design.vhd:50]
-CRITICAL WARNING: [Synth 8-6859] multi-driven net on pin d4_OBUF[0] with 2nd driver pin 'd4_reg[0]/Q' [/home/df/Documenti/Universita/FPGA/ClockVHDL/ClockVHDL.srcs/sources_1/new/Design.vhd:281]
-
-Report Check Netlist: 
-+------+------------------+-------+---------+-------+------------------+
-|      |Item              |Errors |Warnings |Status |Description       |
-+------+------------------+-------+---------+-------+------------------+
-|1     |multi_driven_nets |      0|       28|Failed |Multi driven nets |
-+------+------------------+-------+---------+-------+------------------+
 ---------------------------------------------------------------------------------
 Start Rebuilding User Hierarchy
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Rebuilding User Hierarchy : Time (s): cpu = 00:00:17 ; elapsed = 00:00:18 . Memory (MB): peak = 1882.828 ; gain = 560.984 ; free physical = 4194 ; free virtual = 29235
-Synthesis current peak Physical Memory [PSS] (MB): peak = 1301.105; parent = 1095.711; children = 205.429
-Synthesis current peak Virtual Memory [VSS] (MB): peak = 2848.074; parent = 1882.832; children = 965.242
+Finished Rebuilding User Hierarchy : Time (s): cpu = 00:00:16 ; elapsed = 00:00:17 . Memory (MB): peak = 1880.480 ; gain = 557.953 ; free physical = 3590 ; free virtual = 28640
+Synthesis current peak Physical Memory [PSS] (MB): peak = 1300.721; parent = 1095.388; children = 205.367
+Synthesis current peak Virtual Memory [VSS] (MB): peak = 2845.727; parent = 1880.484; children = 965.242
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Renaming Generated Ports
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Ports : Time (s): cpu = 00:00:17 ; elapsed = 00:00:18 . Memory (MB): peak = 1882.828 ; gain = 560.984 ; free physical = 4194 ; free virtual = 29235
-Synthesis current peak Physical Memory [PSS] (MB): peak = 1301.184; parent = 1095.789; children = 205.429
-Synthesis current peak Virtual Memory [VSS] (MB): peak = 2848.074; parent = 1882.832; children = 965.242
+Finished Renaming Generated Ports : Time (s): cpu = 00:00:16 ; elapsed = 00:00:17 . Memory (MB): peak = 1880.480 ; gain = 557.953 ; free physical = 3590 ; free virtual = 28640
+Synthesis current peak Physical Memory [PSS] (MB): peak = 1300.783; parent = 1095.450; children = 205.367
+Synthesis current peak Virtual Memory [VSS] (MB): peak = 2845.727; parent = 1880.484; children = 965.242
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Handling Custom Attributes
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Handling Custom Attributes : Time (s): cpu = 00:00:17 ; elapsed = 00:00:18 . Memory (MB): peak = 1882.828 ; gain = 560.984 ; free physical = 4194 ; free virtual = 29235
-Synthesis current peak Physical Memory [PSS] (MB): peak = 1301.184; parent = 1095.789; children = 205.429
-Synthesis current peak Virtual Memory [VSS] (MB): peak = 2848.074; parent = 1882.832; children = 965.242
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:16 ; elapsed = 00:00:17 . Memory (MB): peak = 1880.480 ; gain = 557.953 ; free physical = 3590 ; free virtual = 28640
+Synthesis current peak Physical Memory [PSS] (MB): peak = 1300.783; parent = 1095.450; children = 205.367
+Synthesis current peak Virtual Memory [VSS] (MB): peak = 2845.727; parent = 1880.484; children = 965.242
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Renaming Generated Nets
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Nets : Time (s): cpu = 00:00:17 ; elapsed = 00:00:18 . Memory (MB): peak = 1882.828 ; gain = 560.984 ; free physical = 4194 ; free virtual = 29235
-Synthesis current peak Physical Memory [PSS] (MB): peak = 1301.215; parent = 1095.820; children = 205.429
-Synthesis current peak Virtual Memory [VSS] (MB): peak = 2848.074; parent = 1882.832; children = 965.242
+Finished Renaming Generated Nets : Time (s): cpu = 00:00:16 ; elapsed = 00:00:17 . Memory (MB): peak = 1880.480 ; gain = 557.953 ; free physical = 3590 ; free virtual = 28640
+Synthesis current peak Physical Memory [PSS] (MB): peak = 1300.814; parent = 1095.481; children = 205.367
+Synthesis current peak Virtual Memory [VSS] (MB): peak = 2845.727; parent = 1880.484; children = 965.242
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Writing Synthesis Report
@@ -273,52 +223,48 @@ Report Cell Usage:
 |      |Cell   |Count |
 +------+-------+------+
 |1     |BUFG   |     1|
-|2     |CARRY4 |    40|
-|3     |LUT1   |     5|
-|4     |LUT2   |    69|
-|5     |LUT3   |    11|
-|6     |LUT4   |    16|
-|7     |LUT5   |    33|
-|8     |LUT6   |    52|
-|9     |FDCE   |    66|
-|10    |FDPE   |     4|
-|11    |FDRE   |    64|
-|12    |LD     |    28|
-|13    |IBUF   |     6|
-|14    |OBUF   |    28|
+|2     |CARRY4 |    60|
+|3     |LUT1   |    10|
+|4     |LUT2   |   104|
+|5     |LUT3   |     8|
+|6     |LUT4   |    28|
+|7     |LUT5   |    13|
+|8     |LUT6   |    62|
+|9     |FDCE   |    44|
+|10    |FDRE   |    98|
+|11    |IBUF   |     6|
+|12    |OBUF   |    45|
 +------+-------+------+
 
 Report Instance Areas: 
 +------+---------+-------+------+
 |      |Instance |Module |Cells |
 +------+---------+-------+------+
-|1     |top      |       |   423|
+|1     |top      |       |   479|
 +------+---------+-------+------+
 ---------------------------------------------------------------------------------
-Finished Writing Synthesis Report : Time (s): cpu = 00:00:17 ; elapsed = 00:00:18 . Memory (MB): peak = 1882.828 ; gain = 560.984 ; free physical = 4194 ; free virtual = 29235
-Synthesis current peak Physical Memory [PSS] (MB): peak = 1301.246; parent = 1095.852; children = 205.429
-Synthesis current peak Virtual Memory [VSS] (MB): peak = 2848.074; parent = 1882.832; children = 965.242
+Finished Writing Synthesis Report : Time (s): cpu = 00:00:16 ; elapsed = 00:00:17 . Memory (MB): peak = 1880.480 ; gain = 557.953 ; free physical = 3590 ; free virtual = 28640
+Synthesis current peak Physical Memory [PSS] (MB): peak = 1300.846; parent = 1095.513; children = 205.367
+Synthesis current peak Virtual Memory [VSS] (MB): peak = 2845.727; parent = 1880.484; children = 965.242
 ---------------------------------------------------------------------------------
-Synthesis finished with 0 errors, 56 critical warnings and 7 warnings.
-Synthesis Optimization Runtime : Time (s): cpu = 00:00:17 ; elapsed = 00:00:18 . Memory (MB): peak = 1882.828 ; gain = 560.984 ; free physical = 4198 ; free virtual = 29239
-Synthesis Optimization Complete : Time (s): cpu = 00:00:17 ; elapsed = 00:00:18 . Memory (MB): peak = 1882.836 ; gain = 560.984 ; free physical = 4198 ; free virtual = 29239
+Synthesis finished with 0 errors, 0 critical warnings and 12 warnings.
+Synthesis Optimization Runtime : Time (s): cpu = 00:00:16 ; elapsed = 00:00:17 . Memory (MB): peak = 1880.480 ; gain = 557.953 ; free physical = 3590 ; free virtual = 28640
+Synthesis Optimization Complete : Time (s): cpu = 00:00:16 ; elapsed = 00:00:17 . Memory (MB): peak = 1880.488 ; gain = 557.953 ; free physical = 3590 ; free virtual = 28640
 INFO: [Project 1-571] Translating synthesized netlist
-Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 1885.797 ; gain = 0.000 ; free physical = 4259 ; free virtual = 29303
-INFO: [Netlist 29-17] Analyzing 68 Unisim elements for replacement
+Netlist sorting complete. Time (s): cpu = 00:00:00.01 ; elapsed = 00:00:00.01 . Memory (MB): peak = 1886.418 ; gain = 0.000 ; free physical = 3677 ; free virtual = 28730
+INFO: [Netlist 29-17] Analyzing 60 Unisim elements for replacement
 INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
 INFO: [Project 1-570] Preparing netlist for logic optimization
 INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
-Netlist sorting complete. Time (s): cpu = 00:00:00.01 ; elapsed = 00:00:00 . Memory (MB): peak = 2012.445 ; gain = 0.000 ; free physical = 4236 ; free virtual = 29292
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 2011.129 ; gain = 0.000 ; free physical = 3666 ; free virtual = 28729
 INFO: [Project 1-111] Unisim Transformation Summary:
-  A total of 28 instances were transformed.
-  LD => LDCE: 28 instances
+No Unisim elements were transformed.
 
-Synth Design complete, checksum: 99b58d87
+Synth Design complete, checksum: a0b649b2
 INFO: [Common 17-83] Releasing license: Synthesis
-19 Infos, 7 Warnings, 56 Critical Warnings and 0 Errors encountered.
+22 Infos, 12 Warnings, 0 Critical Warnings and 0 Errors encountered.
 synth_design completed successfully
-synth_design: Time (s): cpu = 00:00:22 ; elapsed = 00:00:20 . Memory (MB): peak = 2012.445 ; gain = 690.602 ; free physical = 4414 ; free virtual = 29470
-INFO: [runtcl-6] Synthesis results are not added to the cache due to CRITICAL_WARNING
+synth_design: Time (s): cpu = 00:00:21 ; elapsed = 00:00:19 . Memory (MB): peak = 2011.129 ; gain = 688.602 ; free physical = 3866 ; free virtual = 28929
 INFO: [Common 17-1381] The checkpoint '/home/df/Documenti/Universita/FPGA/ClockVHDL/ClockVHDL.runs/synth_1/clock.dcp' has been generated.
 INFO: [runtcl-4] Executing : report_utilization -file clock_utilization_synth.rpt -pb clock_utilization_synth.pb
-INFO: [Common 17-206] Exiting Vivado at Tue Oct 29 14:22:06 2024...
+INFO: [Common 17-206] Exiting Vivado at Mon Nov  4 14:20:23 2024...

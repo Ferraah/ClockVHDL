@@ -1,0 +1,4 @@
+Running: xsim.dir/alarm_tb_behav/xsimk -simmode gui -wdb alarm_tb_behav.wdb -simrunnum 0 -socket 54187
+Design successfully loaded
+Design Loading Memory Usage: 29352 KB (Peak: 29472 KB)
+Design Loading CPU Usage: 30 ms

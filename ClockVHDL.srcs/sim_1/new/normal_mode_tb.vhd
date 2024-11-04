@@ -40,7 +40,6 @@ architecture testbench of normal_mode_tb is
        return (hours * 3600 + minutes * 60) * 10; 
     end function;
 
-
 begin
     -- Instantiate the clock
     uut: clock
@@ -92,6 +91,11 @@ begin
         end loop; 
 
         -- wait for time_to_clock_cycles(25, 0)*clk_period;
+
+        wait for 1000 ns;
+        rst <= '1';
+        assert false report "Testbench finished" severity note;
+
     end process test_process;
 
 end testbench;

@@ -1,119 +1,144 @@
-LIBRARY IEEE;
-USE IEEE.std_logic_1164.ALL;
-USE IEEE.std_logic_unsigned.ALL;
+library IEEE;
+use IEEE.std_logic_1164.all;
+-- USE IEEE.std_logic_unsigned.ALL;
 
-ENTITY tb_clock IS
-END tb_clock;
+entity alarm_tb is 
+end alarm_tb;
 
-ARCHITECTURE behavior OF tb_clock IS
+architecture testbench of alarm_tb is 
+    -- Clock signals
+    signal clk : std_logic := '0';
+    signal rst : std_logic := '0';
 
-    -- Component Declaration for the Unit Under Test (UUT)
-    COMPONENT clock
-    PORT(
-        clk : IN std_logic;
-        rst : IN std_logic;
-        b1 : IN std_logic;
-        b2 : IN std_logic;
-        b3 : IN std_logic;
-        b4 : IN std_logic;
-        d1 : OUT std_logic_vector(6 DOWNTO 0);
-        d2 : OUT std_logic_vector(6 DOWNTO 0);
-        d3 : OUT std_logic_vector(6 DOWNTO 0);
-        d4 : OUT std_logic_vector(6 DOWNTO 0)
-    );
-    END COMPONENT;
+    -- Button signals
+    signal b1 : std_logic := '0'; -- Toggle SETTING_MODE
+    signal b2 : std_logic := '0'; -- Switch between digits
+    signal b3 : std_logic := '0'; -- Increment selected digit
+    signal b4 : std_logic := '0'; -- (Unused in this test)
 
-    -- Inputs
-    SIGNAL clk : std_logic := '0';
-    SIGNAL rst : std_logic := '0';
-    SIGNAL b1 : std_logic := '0';
-    SIGNAL b2 : std_logic := '0';
-    SIGNAL b3 : std_logic := '0';
-    SIGNAL b4 : std_logic := '0';
+    signal check_m_u, check_m_d, check_h_u, check_h_d : integer range 0 to 9;
+    
+    -- Output 7-segment display signals
+    signal d1, d2, d3, d4 : std_logic_vector(6 downto 0);
 
-    -- Outputs
-    SIGNAL d1 : std_logic_vector(6 DOWNTO 0);
-    SIGNAL d2 : std_logic_vector(6 DOWNTO 0);
-    SIGNAL d3 : std_logic_vector(6 DOWNTO 0);
-    SIGNAL d4 : std_logic_vector(6 DOWNTO 0);
+    signal check_alarm_active: std_logic := '0';
+    signal alarm_led : std_logic := '0';
 
-    -- Clock period definitions
-    CONSTANT clk_period : time := 10 ns;
+    constant clk_period : time := 20 ns; -- 20 ns per clock cycle
 
-BEGIN
+    -- Clock instance
+    component clock
+        port (
+            clk, rst : in std_logic;
+            b1, b2, b3, b4 : in std_logic;
+            d1, d2, d3, d4 : out std_logic_vector(6 downto 0);
+		    check_m_u, check_m_d, check_h_u, check_h_d : inout integer range 0 to 9;
+            check_alarm_active: out std_logic;
+            alarm_led: out std_logic
+        );
+    end component;
 
-    -- Instantiate the Unit Under Test (UUT)
-    uut: clock PORT MAP (
-        clk => clk,
-        rst => rst,
-        b1 => b1,
-        b2 => b2,
-        b3 => b3,
-        b4 => b4,
-        d1 => d1,
-        d2 => d2,
-        d3 => d3,
-        d4 => d4
-    );
-
-    -- Clock process definitions
-    clk_process :process
+    -- Clock cycles to perform the indicated time on the clock
+    pure function time_to_clock_cycles(hours : integer; minutes: integer) return integer is
     begin
-        clk <= '0';
-        wait for clk_period/2;
+       return (hours * 3600 + minutes * 60) * 10; 
+    end function;
+
+
+begin
+
+    uut: clock
+        port map (
+            clk => clk,
+            rst => rst,
+            b1 => b1,
+            b2 => b2,
+            b3 => b3,
+            b4 => b4,
+            d1 => d1,
+            d2 => d2,
+            d3 => d3,
+            d4 => d4,
+            check_m_u => check_m_u,
+            check_m_d => check_m_d,
+            check_h_u => check_h_u,
+            check_h_d => check_h_d,
+            check_alarm_active => check_alarm_active,
+            alarm_led => alarm_led
+
+        );
+
+    -- Clock generation
+    clk_process : process
+    begin
         clk <= '1';
         wait for clk_period/2;
-    end process;
+        clk <= '0';
+        wait for clk_period/2;
+    end process clk_process;
 
     -- Stimulus process
     stim_proc: process
     begin
         -- Reset the clock
         rst <= '1';
-        wait for 20 ns;
+        wait for clk_period;
         rst <= '0';
-        wait for 600 ns;
+        wait for 1000 ns;
 
-        -- Set the alarm time to 00:02
-        b4 <= '1'; -- Enter alarm setting mode
-        wait for 200 ns;
+        -- Enter alarm mode 
+        b4 <= '1'; 
+        wait for clk_period*10*2; -- Hold `b4` for 2 seconds to enter alarm mode
         b4 <= '0';
-        wait for 20 ns;
+        wait for clk_period;
       
-      	-- set the alarm to 00:02
+      	-- set the alarm to 00:02, doing a full cycle of digit
 		-- increment minutes
         for i in 1 to 62 loop
             b3 <= '1';
-            wait for 20 ns;
+            wait for clk_period;
             b3 <= '0'; -- Release b3 to simulate button lock
-            wait for 40 ns; -- Delay to ensure only one increment per press
+            wait for clk_period; -- Delay to ensure only one increment per press
         end loop;
-		-- increment hours
+            
+
+		-- increment hours, doing a full cycle of digit
          for i in 1 to 24 loop
             b2 <= '1';
-            wait for 20 ns;
+            wait for clk_period;
             b2 <= '0'; -- Release b3 to simulate button lock
-            wait for 40 ns; -- Delay to ensure only one increment per press
+            wait for clk_period; -- Delay to ensure only one increment per press
         end loop;
 
+
 		-- exit alarm setting with saving the alarm time
-        wait for 20 ns;
         b1 <= '1';
-        wait for 200 ns;
+        wait for clk_period*10*2;
         b1 <= '0';
-        wait for 20 ns;
+        wait for clk_period;
 
+        assert check_alarm_active = '1' report "Alarm not active" severity error;
 
-        wait for 10 us;
-
-
-        b2 <= '1'; -- put the alarm of
-        wait for 200 ns;
-        b2 <= '0';
-        wait for 20 ns;
+        wait for time_to_clock_cycles(0, 2)*clk_period; -- Wait for 2 minutes ) 
         
-        --rst <= '1';
+        assert check_m_u = 2 report "Incorrect minutes units" severity error;
+        assert check_m_d = 0 report "Incorrect minutes tens" severity error;
+        assert check_h_u = 0 report "Incorrect hours units" severity error;
+        assert check_h_d = 0 report "Incorrect hours tens" severity error;
+
+        assert alarm_led = '1' report "Alarm not ringing" severity error;
+
+        b2 <= '1'; 
+        wait for clk_period*10*2; -- Hold `b2` for 2 seconds to stop the alarm
+        b2 <= '0';
+            
+        assert alarm_led = '0' report "Alarm not stopped" severity error;
+        assert check_alarm_active = '0' report "Alarm not deactivated" severity error;
+            
+        wait for 1000 ns;
+        rst <= '1';
+        assert false report "Testbench finished" severity note;
         wait;
     end process;
 
-END;
+end testbench;
