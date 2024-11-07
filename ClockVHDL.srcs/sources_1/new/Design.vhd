@@ -50,9 +50,12 @@ ARCHITECTURE hardware OF clock IS
 	signal LED_activating_counter: std_logic_vector(1 downto 0);
     signal d1, d2, d3, d4 : std_logic_vector(6 DOWNTO 0); -- 7-segment display outputs
 
-    CONSTANT divider : INTEGER := 5000000;       -- Divider value (for a 50MHz input to get 10Hz output)
-    SIGNAL div_counter   : INTEGER RANGE 0 TO divider-1 := 0; -- Counter to keep track of clock cycles
-    SIGNAL clk_div   : STD_LOGIC := '0';          -- Internal divided clock signal
+    CONSTANT divider_display : INTEGER := 5000;       -- Divider value (for a 50MHz input to get 10KHz output)
+    CONSTANT divider_sec : INTEGER := 5000000;       -- Divider value (for a 50MHz input to get 10Hz output)
+    SIGNAL div_counter_display   : INTEGER RANGE 0 TO divider-1 := 0; -- Counter to keep track of clock cycles
+    SIGNAL div_counter_sec   : INTEGER RANGE 0 TO divider-1 := 0; -- Counter to keep track of clock cycles
+    SIGNAL clk_div_display   : STD_LOGIC := '0';          -- Internal divided clock signal
+    SIGNAL clk_div_sec   : STD_LOGIC := '0';          -- Internal divided clock signal
     
 BEGIN
 
@@ -66,17 +69,27 @@ BEGIN
 --		check_alarm_active <= alarm_active;
 --	END PROCESS;
 
+	
 	PROCESS (clk, rst)
 	   BEGIN
-	       IF div_counter = divider - 1 THEN
-                div_counter <= 0;
-                clk_div <= NOT clk_div;           -- Toggle the clock output
-            ELSE
-                div_counter <= div_counter + 1;
-            END IF;
-    END PROCESS    
-    
-    PROCESS(clk_div)
+       
+	       IF div_counter_display = divider_display - 1 THEN
+                div_counter_display <= 0;
+                clk_div_display <= NOT clk_div_display;           -- Toggle the clock output
+           ELSE
+                div_counter_display <= div_counter_display + 1;
+           END IF;
+           
+	       IF div_counter_sec = divider_sec - 1 THEN
+                div_counter_sec <= 0;
+                clk_div_sec <= NOT clk_div_sec;           -- Toggle the clock output
+           ELSE
+                div_counter_sec <= div_counter_sec + 1;
+           END IF;
+           
+    END PROCESS;   
+     
+    PROCESS(clk_div_display)
     BEGIN
         LED_activating_counter <= std_logic_vector(LED_activating_counter + 1);
     END PROCESS;
@@ -98,8 +111,10 @@ BEGIN
 			alarm_m_u <= 0;
 			alarm_m_d <= 0;
 			current_state <= STANDBY;
-			div_counter <= 0;
-			clk_div <= '0';
+			div_counter_display <= 0;
+			div_counter_sec <= 0;
+			clk_div_display <= '0';
+			clk_div_sec <= '0';
 		ELSIF rising_edge(clk) THEN
 		
 		    
