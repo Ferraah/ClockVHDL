@@ -7,6 +7,7 @@ ENTITY clock IS
 		clk, rst : IN std_logic;
 		b1, b2, b3, b4 : IN std_logic; -- Buttons
 		d1, d2, d3, d4 : OUT std_logic_vector(6 DOWNTO 0); -- 7-segment display outputs
+		anode_activate : OUT std_logic_vector(3 DOWNTO 0); -- Anode activation signal
 		check_m_u, check_m_d, check_h_u, check_h_d : OUT INTEGER RANGE 0 TO 9; -- Check time values 	
 		check_alarm_active : OUT std_logic; -- Check alarm active signal
 		alarm_led : OUT std_logic -- Alarm LED
@@ -295,11 +296,12 @@ BEGIN
     
     
 	-- Logic for output signals
-	PROCESS (clk, h_u, h_d, m_u, m_d, alarm_h_u, alarm_h_d, alarm_m_u, alarm_m_d, count_clock)
+	PROCESS (current_state, h_u, h_d, m_u, m_d, alarm_h_u, alarm_h_d, alarm_m_u, alarm_m_d, count_clock)
 		BEGIN
 			CASE current_state IS
             
 				WHEN STANDBY | ALARM_TRIGGERED =>
+
 					-- Minutes units display
 					CASE m_u IS
 						WHEN 0 => d1 <= "0000001"; -- 0
