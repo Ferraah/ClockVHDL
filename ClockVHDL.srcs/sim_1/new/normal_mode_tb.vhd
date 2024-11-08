@@ -15,7 +15,6 @@ architecture testbench of normal_mode_tb is
     signal b3 : std_logic := '0'; -- Increment selected digit
     signal b4 : std_logic := '0'; -- (Unused in this test)
 
-
     -- To debug
     signal m_u, m_d, h_u, h_d : integer range 0 to 9;
 
@@ -25,15 +24,14 @@ architecture testbench of normal_mode_tb is
     constant clk_period : time := 20 ns; -- 20 ns per clock cycle
 
     -- Clock instance
-    component clock
+    component Main
         port (
             clk, rst : IN std_logic;
             b1, b2, b3, b4 : IN std_logic; -- Buttons
+            d1, d2, d3, d4 : OUT std_logic_vector;
             check_m_u, check_m_d, check_h_u, check_h_d : OUT INTEGER RANGE 0 TO 9; -- Check time values 	
             check_alarm_active : OUT std_logic; -- Check alarm active signal
-            alarm_led : OUT std_logic; -- Alarm LED
-            d_out : OUT std_logic_vector(6 DOWNTO 0); -- Debug output
-            Anode_Activate : out STD_LOGIC_VECTOR (3 downto 0)-- 4 Anode signals
+            alarm_led : OUT std_logic -- Alarm LED
     
         );
     end component;
@@ -46,7 +44,7 @@ architecture testbench of normal_mode_tb is
 
 begin
     -- Instantiate the clock
-    uut: clock
+    uut: Main
         port map (
             clk => clk,
             rst => rst,
@@ -54,10 +52,10 @@ begin
             b2 => b2,
             b3 => b3,
             b4 => b4,
---            d1 => d1,
---            d2 => d2,
---            d3 => d3,
---            d4 => d4,
+            d1 => d1,
+            d2 => d2,
+            d3 => d3,
+            d4 => d4,
             check_m_u => m_u,
             check_m_d => m_d,
             check_h_u => h_u,

@@ -2,26 +2,38 @@ LIBRARY IEEE;
 USE IEEE.std_logic_1164.ALL;
 USE IEEE.std_logic_unsigned.ALL;
 
-
-ENTITY clock IS
+ENTITY Main IS
 	PORT (
 		clk, rst : IN std_logic;
 		b1, b2, b3, b4 : IN std_logic; -- Buttons
---		check_m_u, check_m_d, check_h_u, check_h_d : OUT INTEGER RANGE 0 TO 9; -- Check time values 	
---		check_alarm_active : OUT std_logic; -- Check alarm active signal
-		alarm_led : OUT std_logic; -- Alarm LED
-		d_out : OUT std_logic_vector(6 DOWNTO 0); -- Debug output
-		Anode_Activate : out STD_LOGIC_VECTOR (3 downto 0)-- 4 Anode signals
-
+		d1, d2, d3, d4 : OUT std_logic_vector(6 DOWNTO 0); -- 7-segment display outputs
+		check_m_u, check_m_d, check_h_u, check_h_d : OUT INTEGER RANGE 0 TO 9; -- Check time values 	
+		check_alarm_active : OUT std_logic; -- Check alarm active signal
+		alarm_led : OUT std_logic -- Alarm LED
 	);
-END clock;
+END Main;
 
-ARCHITECTURE hardware OF clock IS
+ARCHITECTURE hardware OF Main IS
+    
+    -- Declare the ClockDividerN component
+    component ClockDividerN
+        Generic (
+            DIVISOR : integer := 2
+        );
+        Port (
+            clk_in  : in  STD_LOGIC;
+            reset   : in  STD_LOGIC;
+            clk_out : out STD_LOGIC
+        );
+    end component;
+    
+    -- Signal to connect to the clock divider output
+    signal divided_clk : STD_LOGIC;
+    
     
     -- CDB clock
 	SIGNAL count_sec : INTEGER RANGE 0 TO 60; -- seconds counter (0 to 59)
 	SIGNAL count_clock : INTEGER RANGE 0 TO 9; -- clock cycles counter (0 to 9)
-	SIGNAL count_divider_clock : INTEGER RANGE 0 TO 5000000; -- clock cycles counter (0 to 9)
 
 	-- !! Uncomment in production
 	SIGNAL m_u : INTEGER RANGE 0 TO 9; -- minutes units (0 to 9)
@@ -47,55 +59,29 @@ ARCHITECTURE hardware OF clock IS
 	CONSTANT ALARM_TRIGGERED : INTEGER := 3;
 	SIGNAL current_state, next_state : INTEGER RANGE 0 TO 3 := STANDBY;
 	
-	signal LED_activating_counter: std_logic_vector(1 downto 0);
-    signal d1, d2, d3, d4 : std_logic_vector(6 DOWNTO 0); -- 7-segment display outputs
-
-    CONSTANT divider_display : INTEGER := 5000;       -- Divider value (for a 50MHz input to get 10KHz output)
-    CONSTANT divider_sec : INTEGER := 5000000;       -- Divider value (for a 50MHz input to get 10Hz output)
-    SIGNAL div_counter_display   : INTEGER RANGE 0 TO divider-1 := 0; -- Counter to keep track of clock cycles
-    SIGNAL div_counter_sec   : INTEGER RANGE 0 TO divider-1 := 0; -- Counter to keep track of clock cycles
-    SIGNAL clk_div_display   : STD_LOGIC := '0';          -- Internal divided clock signal
-    SIGNAL clk_div_sec   : STD_LOGIC := '0';          -- Internal divided clock signal
-    
 BEGIN
 
---	-- To debug
---	PROCESS(m_u, m_d, h_u, h_d, alarm_active)
---	BEGIN
---		check_m_u <= m_u;
---		check_m_d <= m_d;
---		check_h_u <= h_u;
---		check_h_d <= h_d;
---		check_alarm_active <= alarm_active;
---	END PROCESS;
-
-	
-	PROCESS (clk, rst)
-	   BEGIN
-       
-	       IF div_counter_display = divider_display - 1 THEN
-                div_counter_display <= 0;
-                clk_div_display <= NOT clk_div_display;           -- Toggle the clock output
-           ELSE
-                div_counter_display <= div_counter_display + 1;
-           END IF;
-           
-	       IF div_counter_sec = divider_sec - 1 THEN
-                div_counter_sec <= 0;
-                clk_div_sec <= NOT clk_div_sec;           -- Toggle the clock output
-           ELSE
-                div_counter_sec <= div_counter_sec + 1;
-           END IF;
-           
-    END PROCESS;   
-     
-    PROCESS(clk_div_display)
-    BEGIN
-        LED_activating_counter <= std_logic_vector(LED_activating_counter + 1);
-    END PROCESS;
+    -- Instantiate the clock divider
+    ClockDivider_inst : ClockDividerN
+        port map (
+            clk_in  => clk,     -- Connect input clock
+            reset   => rst,      -- Connect reset signal
+            clk_out => divided_clk -- Connect output clock
+        );
     
+    
+	-- To debug
+	PROCESS(m_u, m_d, h_u, h_d, alarm_active)
+	BEGIN
+		check_m_u <= m_u;
+		check_m_d <= m_d;
+		check_h_u <= h_u;
+		check_h_d <= h_d;
+		check_alarm_active <= alarm_active;
+	END PROCESS;
+
 	-- Main process
-	PROCESS (clk_div_sec, rst)
+	PROCESS (clk, rst)
 	BEGIN
 		IF rst = '1' THEN
 			count_sec <= 0;
@@ -111,18 +97,11 @@ BEGIN
 			alarm_m_u <= 0;
 			alarm_m_d <= 0;
 			current_state <= STANDBY;
-			div_counter_display <= 0;
-			div_counter_sec <= 0;
-			clk_div_display <= '0';
-			clk_div_sec <= '0';
 		ELSIF rising_edge(clk) THEN
-		
-		    
-            
-
+			
             -- State transitions
 			current_state <= next_state;
-
+            
 			-- Count seconds and increment digits accordingly
 			IF count_clock = 9 THEN
 				count_sec <= count_sec + 1;
@@ -338,32 +317,7 @@ BEGIN
             
 		END IF;
 	END PROCESS DEBOUNCE_PROCESS;
-
-	process(LED_activating_counter)
-    begin
-        case LED_activating_counter is
-        when "00" =>
-            Anode_Activate <= "0111"; 
-            -- activate LED1 and Deactivate LED2, LED3, LED4
-            d_out <= d4;
-            -- the first hex digit of the 16-bit number
-        when "01" =>
-            Anode_Activate <= "1011"; 
-            -- activate LED2 and Deactivate LED1, LED3, LED4
-            d_out <= d3;
-            -- the second hex digit of the 16-bit number
-        when "10" =>
-            Anode_Activate <= "1101"; 
-            -- activate LED3 and Deactivate LED2, LED1, LED4
-            d_out <= d2;
-            -- the third hex digit of the 16-bit number
-        when "11" =>
-            Anode_Activate <= "1110"; 
-            -- activate LED4 and Deactivate LED2, LED3, LED1
-            d_out <= d1;
-            -- the fourth hex digit of the 16-bit number    
-        end case;
-    end process;
+    
     
 	-- Logic for output signals
 	PROCESS (current_state, h_u, h_d, m_u, m_d, alarm_h_u, alarm_h_d, alarm_m_u, alarm_m_d, count_clock)
