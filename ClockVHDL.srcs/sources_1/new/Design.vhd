@@ -110,7 +110,7 @@ BEGIN
 			alarm_m_u <= 0;
 			alarm_m_d <= 0;
 			current_state <= STANDBY;
-		ELSIF rising_edge(clk) THEN
+		ELSIF rising_edge(clk_10hz) THEN
 			
             -- State transitions
 			current_state <= next_state;
@@ -264,7 +264,7 @@ BEGIN
 			b2_last <= '0';
 			b3_last <= '0';
 			b4_last <= '0';
-		ELSIF rising_edge(clk) THEN
+		ELSIF rising_edge(clk_10hz) THEN
         
 			b1_last <= b1;
 			b2_last <= b2;
