@@ -15,21 +15,26 @@ END Main;
 
 ARCHITECTURE hardware OF Main IS
     
-    -- Declare the ClockDividerN component
-    component ClockDividerN
-        Generic (
-            DIVISOR : integer := 2
-        );
+    component ClockDividerSeconds
         Port (
             clk_in  : in  STD_LOGIC;
             reset   : in  STD_LOGIC;
             clk_out : out STD_LOGIC
         );
     end component;
+
+	component ClockDividerDisplay
+	Port (
+		clk_in  : in  STD_LOGIC;
+		reset   : in  STD_LOGIC;
+		clk_out : out STD_LOGIC
+	);
+	end component;
     
     -- Signal to connect to the clock divider output
-    signal divided_clk : STD_LOGIC;
-    
+    signal clk_10Hz : STD_LOGIC;
+    signal clk_10KHz : STD_LOGIC;
+
     
     -- CDB clock
 	SIGNAL count_sec : INTEGER RANGE 0 TO 60; -- seconds counter (0 to 59)
@@ -62,12 +67,20 @@ ARCHITECTURE hardware OF Main IS
 BEGIN
 
     -- Instantiate the clock divider
-    ClockDivider_inst : ClockDividerN
+    ClockDividerSeconds_inst : ClockDividerSeconds
         port map (
             clk_in  => clk,     -- Connect input clock
             reset   => rst,      -- Connect reset signal
-            clk_out => divided_clk -- Connect output clock
+            clk_out => clk_10Hz -- Connect output clock
         );
+
+	-- Instantiate the clock divider
+	ClockDividerDisplay_inst : ClockDividerDisplay
+	port map (
+		clk_in  => clk,     -- Connect input clock
+		reset   => rst,      -- Connect reset signal
+		clk_out => clk_10KHz -- Connect output clock
+	);
     
     
 	-- To debug
@@ -81,7 +94,7 @@ BEGIN
 	END PROCESS;
 
 	-- Main process
-	PROCESS (clk, rst)
+	PROCESS (clk_10hz, rst)
 	BEGIN
 		IF rst = '1' THEN
 			count_sec <= 0;
@@ -236,7 +249,7 @@ BEGIN
     
     
 	-- Debouncing for buttons
-	DEBOUNCE_PROCESS : PROCESS (clk, rst)
+	DEBOUNCE_PROCESS : PROCESS (clk_10hz, rst)
 		VARIABLE hold_b1_time : INTEGER := 0;
 		VARIABLE hold_b2_time : INTEGER := 0;
 		VARIABLE hold_b3_time : INTEGER := 0;
