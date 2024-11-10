@@ -15,7 +15,7 @@ architecture Behavioral of Display_tb is
             h_u : in INTEGER RANGE 0 TO 9;
             h_d : in INTEGER RANGE 0 TO 2;
             segments : out std_logic_vector(6 downto 0);
-            digit_selector : out integer range 0 to 3
+            anode : out std_logic_vector(3 downto 0)
         );
     end component;
 
@@ -27,7 +27,7 @@ architecture Behavioral of Display_tb is
     signal h_u : INTEGER RANGE 0 TO 9 := 0;
     signal h_d : INTEGER RANGE 0 TO 2 := 0;
     signal segments : std_logic_vector(6 downto 0);
-    signal digit_selector : integer range 0 to 3;
+    signal anode : std_logic_vector(3 downto 0);
 
     -- Clock period constant
     constant clk_period : time := 10 ns;
@@ -43,7 +43,7 @@ begin
             h_u => h_u,
             h_d => h_d,
             segments => segments,
-            digit_selector => digit_selector
+            anode => anode
         );
 
     -- Clock generation

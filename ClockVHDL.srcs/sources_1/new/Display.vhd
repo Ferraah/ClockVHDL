@@ -10,7 +10,7 @@ entity Display is
         h_u            : in INTEGER RANGE 0 TO 9; -- hours units (0 to 9)
         h_d            : in INTEGER RANGE 0 TO 2; -- hours tens (0 to 2)
         segments       : out std_logic_vector(6 downto 0);
-        digit_selector : out integer range 0 to 3
+        anode : out STD_LOGIC_VECTOR (3 downto 0)
     );
 end Display;
 
@@ -40,7 +40,6 @@ begin
         end if;
     end process;
 
-    digit_selector <= digit_selector_reg;
 
     -- Process to assign current digit value based on selector
     process (digit_selector_reg, m_u, m_d, h_u, h_d)
@@ -77,4 +76,19 @@ begin
         end case;
     end process;
 
+    process (digit_selector_reg)
+    begin
+        case digit_selector_reg is
+            when 0 =>
+                anode <= "0111";
+            when 1 =>
+                anode <= "1011";
+            when 2 =>
+                anode <= "1101";
+            when 3 =>
+                anode <= "1110";
+            when others =>
+                anode <= "1111";
+        end case;
+    end process;
 end Behavioral;

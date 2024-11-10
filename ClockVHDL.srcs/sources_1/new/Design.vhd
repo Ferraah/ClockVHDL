@@ -7,9 +7,9 @@ ENTITY Main IS
 		clk, rst : IN std_logic;
 		b1, b2, b3, b4 : IN std_logic; -- Buttons
 		segments : OUT std_logic_vector(6 DOWNTO 0); -- 7-segment display
-		digit_selector : OUT INTEGER RANGE 0 TO 3; -- Digit selector
-		check_m_u, check_m_d, check_h_u, check_h_d : OUT INTEGER RANGE 0 TO 9; -- Check time values 	
-		check_alarm_active : OUT std_logic; -- Check alarm active signal
+		anode : OUT std_logic_vector(3 DOWNTO 0); -- Anode display
+		--check_m_u, check_m_d, check_h_u, check_h_d : OUT INTEGER RANGE 0 TO 9; -- Check time values 	
+		--check_alarm_active : OUT std_logic; -- Check alarm active signal
 		alarm_led : OUT std_logic -- Alarm LED
 	);
 END Main;
@@ -41,7 +41,7 @@ ARCHITECTURE hardware OF Main IS
 		h_u : in INTEGER RANGE 0 TO 9; -- hours units (0 to 9)
 		h_d : in INTEGER RANGE 0 TO 2; -- hours tens (0 to 2)
 		segments : out std_logic_vector(6 downto 0);
-		digit_selector : out integer range 0 to 3
+		anode : out std_logic_vector(3 downto 0)
 	);
 	end component;
 
@@ -105,18 +105,18 @@ BEGIN
 		h_u => h_u,
 		h_d => h_d,
 		segments => segments,
-		digit_selector => digit_selector
+		anode => anode
 	);
 
-	-- To debug
-	PROCESS(m_u, m_d, h_u, h_d, alarm_active)
-	BEGIN
-		check_m_u <= m_u;
-		check_m_d <= m_d;
-		check_h_u <= h_u;
-		check_h_d <= h_d;
-		check_alarm_active <= alarm_active;
-	END PROCESS;
+--	-- To debug
+--	PROCESS(m_u, m_d, h_u, h_d, alarm_active)
+--	BEGIN
+--		check_m_u <= m_u;
+--		check_m_d <= m_d;
+--		check_h_u <= h_u;
+--		check_h_d <= h_d;
+--		check_alarm_active <= alarm_active;
+--	END PROCESS;
 
 	-- Main process
 	PROCESS (clk_10hz, rst)
