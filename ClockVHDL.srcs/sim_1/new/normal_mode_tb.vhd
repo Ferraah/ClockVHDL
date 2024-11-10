@@ -19,7 +19,8 @@ architecture testbench of normal_mode_tb is
     signal m_u, m_d, h_u, h_d : integer range 0 to 9;
 
     -- Output 7-segment display signals
-    signal d1, d2, d3, d4 : std_logic_vector(6 downto 0);
+    signal segments : std_logic_vector(6 downto 0);
+    signal digit_selector : integer range 0 to 3;
 
     -- constant clk_period : time := 20 ns; -- 20 ns per clock cycle
     constant clk_period : time := 20 ns; -- 20 ns per clock cycle
@@ -30,7 +31,8 @@ architecture testbench of normal_mode_tb is
         port (
             clk, rst : IN std_logic;
             b1, b2, b3, b4 : IN std_logic; -- Buttons
-            d1, d2, d3, d4 : OUT std_logic_vector;
+            segments : OUT std_logic_vector;
+            digit_selector : OUT INTEGER RANGE 0 TO 3; -- Digit selector
             check_m_u, check_m_d, check_h_u, check_h_d : OUT INTEGER RANGE 0 TO 9; -- Check time values 	
             check_alarm_active : OUT std_logic; -- Check alarm active signal
             alarm_led : OUT std_logic -- Alarm LED
@@ -54,10 +56,8 @@ begin
             b2 => b2,
             b3 => b3,
             b4 => b4,
-            d1 => d1,
-            d2 => d2,
-            d3 => d3,
-            d4 => d4,
+            segments => segments,
+            digit_selector => digit_selector,
             check_m_u => m_u,
             check_m_d => m_d,
             check_h_u => h_u,

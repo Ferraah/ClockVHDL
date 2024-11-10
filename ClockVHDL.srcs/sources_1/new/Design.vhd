@@ -6,8 +6,8 @@ ENTITY Main IS
 	PORT (
 		clk, rst : IN std_logic;
 		b1, b2, b3, b4 : IN std_logic; -- Buttons
-		d1, d2, d3, d4: OUT std_logic_vector(6 DOWNTO 0); -- Display output
-		anode_out : OUT std_logic_vector(3 DOWNTO 0); -- Anode output
+		segments : OUT std_logic_vector(6 DOWNTO 0); -- 7-segment display
+		digit_selector : OUT INTEGER RANGE 0 TO 3; -- Digit selector
 		check_m_u, check_m_d, check_h_u, check_h_d : OUT INTEGER RANGE 0 TO 9; -- Check time values 	
 		check_alarm_active : OUT std_logic; -- Check alarm active signal
 		alarm_led : OUT std_logic -- Alarm LED
@@ -31,7 +31,20 @@ ARCHITECTURE hardware OF Main IS
 		clk_out : out STD_LOGIC
 	);
 	end component;
-    
+	
+	component Display
+	PORT (
+		clk : in std_logic;
+		rst : in std_logic;
+		m_u : in INTEGER RANGE 0 TO 9; -- minutes units (0 to 9)
+		m_d : in INTEGER RANGE 0 TO 5; -- minutes tens (0 to 5)
+		h_u : in INTEGER RANGE 0 TO 9; -- hours units (0 to 9)
+		h_d : in INTEGER RANGE 0 TO 2; -- hours tens (0 to 2)
+		segments : out std_logic_vector(6 downto 0);
+		digit_selector : out integer range 0 to 3
+	);
+	end component;
+
     -- Signal to connect to the clock divider output
     signal clk_10Hz : STD_LOGIC;
     signal clk_10KHz : STD_LOGIC;
@@ -83,7 +96,18 @@ BEGIN
 		clk_out => clk_10KHz -- Connect output clock
 	);
     
-    
+	Display_inst : Display
+	PORT MAP (
+		clk => clk_10KHz,
+		rst => rst,
+		m_u => m_u,
+		m_d => m_d,
+		h_u => h_u,
+		h_d => h_d,
+		segments => segments,
+		digit_selector => digit_selector
+	);
+
 	-- To debug
 	PROCESS(m_u, m_d, h_u, h_d, alarm_active)
 	BEGIN
@@ -333,166 +357,4 @@ BEGIN
 	END PROCESS DEBOUNCE_PROCESS;
     
     
-	-- Logic for output signals
-	PROCESS (current_state, h_u, h_d, m_u, m_d, alarm_h_u, alarm_h_d, alarm_m_u, alarm_m_d, count_clock)
-		BEGIN
-			CASE current_state IS
-            
-				WHEN STANDBY | ALARM_TRIGGERED =>
-
-					-- Minutes units display
-					CASE m_u IS
-						WHEN 0 => d1 <= "0000001"; -- 0
-						WHEN 1 => d1 <= "1001111"; -- 1
-						WHEN 2 => d1 <= "0010010"; -- 2
-						WHEN 3 => d1 <= "0000110"; -- 3
-						WHEN 4 => d1 <= "1001100"; -- 4
-						WHEN 5 => d1 <= "0100100"; -- 5
-						WHEN 6 => d1 <= "0100000"; -- 6
-						WHEN 7 => d1 <= "0001111"; -- 7
-						WHEN 8 => d1 <= "0000000"; -- 8
-						WHEN 9 => d1 <= "0000100"; -- 9
-						WHEN OTHERS => d1 <= "1111111"; -- blank
-                    END CASE;
-                    -- Minutes tens display
-                    CASE m_d IS
-                        WHEN 0 => d2 <= "0000001"; -- 0
-                        WHEN 1 => d2 <= "1001111"; -- 1
-                        WHEN 2 => d2 <= "0010010"; -- 2
-                        WHEN 3 => d2 <= "0000110"; -- 3
-                        WHEN 4 => d2 <= "1001100"; -- 4
-                        WHEN 5 => d2 <= "0100100"; -- 5
-                        WHEN OTHERS => d2 <= "1111111"; -- blank
-                    END CASE;
-                    -- Hours units display
-                    CASE h_u IS
-                        WHEN 0 => d3 <= "0000001"; -- 0
-                        WHEN 1 => d3 <= "1001111"; -- 1
-                        WHEN 2 => d3 <= "0010010"; -- 2
-                        WHEN 3 => d3 <= "0000110"; -- 3
-                        WHEN 4 => d3 <= "1001100"; -- 4
-                        WHEN 5 => d3 <= "0100100"; -- 5
-                        WHEN 6 => d3 <= "0100000"; -- 6
-                        WHEN 7 => d3 <= "0001111"; -- 7
-                        WHEN 8 => d3 <= "0000000"; -- 8
-                        WHEN 9 => d3 <= "0000100"; -- 9
-                        WHEN OTHERS => d3 <= "1111111"; -- blank
-                    END CASE;
-                    -- Hours tens display
-                    CASE h_d IS
-                        WHEN 0 => d4 <= "0000001"; -- 0
-                        WHEN 1 => d4 <= "1001111"; -- 1
-                        WHEN 2 => d4 <= "0010010"; -- 2
-                        WHEN OTHERS => d4 <= "1111111"; -- blank
-                    END CASE;
-                    
-				WHEN SETTING_ALARM =>
-					-- Display alarm time minutes units
-					CASE alarm_m_u IS
-						WHEN 0 => d1 <= "0000001"; -- 0
-						WHEN 1 => d1 <= "1001111"; -- 1
-						WHEN 2 => d1 <= "0010010"; -- 2
-						WHEN 3 => d1 <= "0000110"; -- 3
-						WHEN 4 => d1 <= "1001100"; -- 4
-						WHEN 5 => d1 <= "0100100"; -- 5
-						WHEN 6 => d1 <= "0100000"; -- 6
-						WHEN 7 => d1 <= "0001111"; -- 7
-						WHEN 8 => d1 <= "0000000"; -- 8
-						WHEN 9 => d1 <= "0000100"; -- 9
-						WHEN OTHERS => d1 <= "1111111"; -- blank
-                    END CASE;
-                    -- Display alarm time minutes tens
-                    CASE alarm_m_d IS
-                        WHEN 0 => d2 <= "0000001"; -- 0
-                        WHEN 1 => d2 <= "1001111"; -- 1
-                        WHEN 2 => d2 <= "0010010"; -- 2
-                        WHEN 3 => d2 <= "0000110"; -- 3
-                        WHEN 4 => d2 <= "1001100"; -- 4
-                        WHEN 5 => d2 <= "0100100"; -- 5
-                        WHEN OTHERS => d2 <= "1111111"; -- blank
-                    END CASE;
-                    -- Display alarm time hours units
-                    CASE alarm_h_u IS
-                        WHEN 0 => d3 <= "0000001"; -- 0
-                        WHEN 1 => d3 <= "1001111"; -- 1
-                        WHEN 2 => d3 <= "0010010"; -- 2
-                        WHEN 3 => d3 <= "0000110"; -- 3
-                        WHEN 4 => d3 <= "1001100"; -- 4
-                        WHEN 5 => d3 <= "0100100"; -- 5
-                        WHEN 6 => d3 <= "0100000"; -- 6
-                        WHEN 7 => d3 <= "0001111"; -- 7
-                        WHEN 8 => d3 <= "0000000"; -- 8
-                        WHEN 9 => d3 <= "0000100"; -- 9
-                        WHEN OTHERS => d3 <= "1111111"; -- blank
-                    END CASE;
-                    -- Display alarm time hours tens
-                    CASE alarm_h_d IS
-                        WHEN 0 => d4 <= "0000001"; -- 0
-                        WHEN 1 => d4 <= "1001111"; -- 1
-                        WHEN 2 => d4 <= "0010010"; -- 2
-                        WHEN OTHERS => d4 <= "1111111"; -- blank
-                    END CASE;
-                    
-				WHEN SETTING_TIME =>
-                	-- Blinking
-					IF count_clock >= 5 THEN
-						d1 <= "1111111";
-						d2 <= "1111111";
-						d3 <= "1111111";
-						d4 <= "1111111";
-					ELSE
-						-- Minutes units display
-						CASE m_u IS
-							WHEN 0 => d1 <= "0000001"; -- 0
-							WHEN 1 => d1 <= "1001111"; -- 1
-							WHEN 2 => d1 <= "0010010"; -- 2
-							WHEN 3 => d1 <= "0000110"; -- 3
-							WHEN 4 => d1 <= "1001100"; -- 4
-							WHEN 5 => d1 <= "0100100"; -- 5
-							WHEN 6 => d1 <= "0100000"; -- 6
-							WHEN 7 => d1 <= "0001111"; -- 7
-							WHEN 8 => d1 <= "0000000"; -- 8
-							WHEN 9 => d1 <= "0000100"; -- 9
-							WHEN OTHERS => d1 <= "1111111"; -- blank
-						END CASE;
-						-- Minutes tens display
-						CASE m_d IS
-							WHEN 0 => d2 <= "0000001"; -- 0
-							WHEN 1 => d2 <= "1001111"; -- 1
-							WHEN 2 => d2 <= "0010010"; -- 2
-							WHEN 3 => d2 <= "0000110"; -- 3
-							WHEN 4 => d2 <= "1001100"; -- 4
-							WHEN 5 => d2 <= "0100100"; -- 5
-							WHEN OTHERS => d2 <= "1111111"; -- blank
-						END CASE;
-						-- Hours units display
-						CASE h_u IS
-							WHEN 0 => d3 <= "0000001"; -- 0
-							WHEN 1 => d3 <= "1001111"; -- 1
-							WHEN 2 => d3 <= "0010010"; -- 2
-							WHEN 3 => d3 <= "0000110"; -- 3
-							WHEN 4 => d3 <= "1001100"; -- 4
-							WHEN 5 => d3 <= "0100100"; -- 5
-							WHEN 6 => d3 <= "0100000"; -- 6
-							WHEN 7 => d3 <= "0001111"; -- 7
-							WHEN 8 => d3 <= "0000000"; -- 8
-							WHEN 9 => d3 <= "0000100"; -- 9
-							WHEN OTHERS => d3 <= "1111111"; -- blank
-						END CASE;
-						-- Hours tens display
-						CASE h_d IS
-							WHEN 0 => d4 <= "0000001"; -- 0
-							WHEN 1 => d4 <= "1001111"; -- 1
-							WHEN 2 => d4 <= "0010010"; -- 2
-							WHEN OTHERS => d4 <= "1111111"; -- blank
-						END CASE;
-					END IF;
-				WHEN OTHERS =>
-					-- Default case for other states (if needed)
-					d1 <= "1111111";
-					d2 <= "1111111";
-					d3 <= "1111111";
-					d4 <= "1111111";
-			END CASE;
-		END PROCESS;
 END hardware;
