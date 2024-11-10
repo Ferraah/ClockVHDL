@@ -6,7 +6,8 @@ ENTITY Main IS
 	PORT (
 		clk, rst : IN std_logic;
 		b1, b2, b3, b4 : IN std_logic; -- Buttons
-		d1, d2, d3, d4 : OUT std_logic_vector(6 DOWNTO 0); -- 7-segment display outputs
+		d1, d2, d3, d4: OUT std_logic_vector(6 DOWNTO 0); -- Display output
+		anode_out : OUT std_logic_vector(3 DOWNTO 0); -- Anode output
 		check_m_u, check_m_d, check_h_u, check_h_d : OUT INTEGER RANGE 0 TO 9; -- Check time values 	
 		check_alarm_active : OUT std_logic; -- Check alarm active signal
 		alarm_led : OUT std_logic -- Alarm LED
