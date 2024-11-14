@@ -9,6 +9,11 @@ entity Display is
         m_d            : in INTEGER RANGE 0 TO 5; -- minutes tens (0 to 5)
         h_u            : in INTEGER RANGE 0 TO 9; -- hours units (0 to 9)
         h_d            : in INTEGER RANGE 0 TO 2; -- hours tens (0 to 2)
+        alarm_m_u      : in INTEGER RANGE 0 TO 9; -- alarm minutes units (0 to 9)
+        alarm_m_d      : in INTEGER RANGE 0 TO 5; -- alarm minutes tens (0 to 5)
+        alarm_h_u      : in INTEGER RANGE 0 TO 9; -- alarm hours units (0 to 9)
+        alarm_h_d      : in INTEGER RANGE 0 TO 2; -- alarm hours tens (0 to 2)
+        current_state  : in INTEGER RANGE 0 TO 3;
         segments       : out std_logic_vector(6 downto 0);
         anode : out STD_LOGIC_VECTOR (3 downto 0)
     );
@@ -42,20 +47,35 @@ begin
 
 
     -- Process to assign current digit value based on selector
-    process (digit_selector_reg, m_u, m_d, h_u, h_d)
+    process (digit_selector_reg, m_u, m_d, h_u, h_d, alarm_m_u, alarm_m_d, alarm_h_u, alarm_h_d, current_state)
     begin
-       case digit_selector_reg is
-           when 0 =>
-               current_value <= m_u;
-           when 1 =>
-               current_value <= m_d;
-           when 2 =>
-               current_value <= h_u;
-           when 3 =>
-               current_value <= h_d;
-           when others =>
-               current_value <= 0;
-       end case; 
+        if current_state = 2 then
+            case digit_selector_reg is
+                when 0 =>
+                    current_value <= alarm_m_u;
+                when 1 =>
+                    current_value <= alarm_m_d;
+                when 2 =>
+                    current_value <= alarm_h_u;
+                when 3 =>
+                    current_value <= alarm_h_d;
+                when others =>
+                    current_value <= 0;
+            end case; 
+        else
+            case digit_selector_reg is
+                when 0 =>
+                    current_value <= m_u;
+                when 1 =>
+                    current_value <= m_d;
+                when 2 =>
+                    current_value <= h_u;
+                when 3 =>
+                    current_value <= h_d;
+                when others =>
+                    current_value <= 0;
+            end case; 
+       end if;
     end process;
 
     -- Process to map current value to 7-segment display encoding

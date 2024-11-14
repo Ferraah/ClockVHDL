@@ -40,6 +40,11 @@ ARCHITECTURE hardware OF Main IS
 		m_d : in INTEGER RANGE 0 TO 5; -- minutes tens (0 to 5)
 		h_u : in INTEGER RANGE 0 TO 9; -- hours units (0 to 9)
 		h_d : in INTEGER RANGE 0 TO 2; -- hours tens (0 to 2)
+		alarm_m_u : in INTEGER RANGE 0 TO 9; -- alarm minutes units (0 to 9)
+		alarm_m_d : in INTEGER RANGE 0 TO 5; -- alarm minutes tens (0 to 5)
+		alarm_h_u : in INTEGER RANGE 0 TO 9; -- alarm hours units (0 to 9)
+		alarm_h_d : in INTEGER RANGE 0 TO 2; -- alarm hours tens (0 to 2)
+		current_state : in INTEGER RANGE 0 TO 3;
 		segments : out std_logic_vector(6 downto 0);
 		anode : out std_logic_vector(3 downto 0)
 	);
@@ -104,6 +109,11 @@ BEGIN
 		m_d => m_d,
 		h_u => h_u,
 		h_d => h_d,
+		alarm_m_u => alarm_m_u,
+		alarm_m_d => alarm_m_d,
+		alarm_h_u => alarm_h_u,
+		alarm_h_d => alarm_h_d,
+		current_state => current_state,
 		segments => segments,
 		anode => anode
 	);
