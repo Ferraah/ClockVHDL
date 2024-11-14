@@ -190,7 +190,7 @@ BEGIN
 					-- change state conditions
 					IF b1_stable = '1' THEN
 						next_state <= SETTING_TIME;
-					ELSIF b4_stable = '1' THEN
+					ELSIF b3_stable = '1' THEN
 						next_state <= SETTING_ALARM;
 					ELSE
 						next_state <= STANDBY;
@@ -257,7 +257,7 @@ BEGIN
 						END IF;
 					END IF;
 					-- change state conditions
-					IF b1_stable = '1' THEN -- exit the alarm setting saving the changes
+					IF b4_stable = '1' THEN -- exit the alarm setting saving the changes
 						alarm_active <= '1';
 						next_state <= STANDBY;
 					ELSIF b2_stable = '1' THEN -- exit the alarm without setting saving the changes
