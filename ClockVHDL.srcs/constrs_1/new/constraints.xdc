@@ -39,3 +39,5 @@ set_property PACKAGE_PIN W4 [get_ports {anode[0]}]
     set_property IOSTANDARD LVCMOS33 [get_ports {anode[0]}]
     
 set_property -dict { PACKAGE_PIN U16   IOSTANDARD LVCMOS33 } [get_ports {alarm_led}]
+set_property -dict { PACKAGE_PIN U5   IOSTANDARD LVCMOS33 } [get_ports {led_setting_alarm}]
+set_property -dict { PACKAGE_PIN U7   IOSTANDARD LVCMOS33 } [get_ports {led_setting_time}]
