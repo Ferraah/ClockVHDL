@@ -260,7 +260,7 @@ BEGIN
 					IF b4_stable = '1' THEN -- exit the alarm setting saving the changes
 						alarm_active <= '1';
 						next_state <= STANDBY;
-					ELSIF b2_stable = '1' THEN -- exit the alarm without setting saving the changes
+					ELSIF b1_stable = '1' THEN -- exit the alarm without setting saving the changes
 						alarm_active <= '0';
 						next_state <= STANDBY;
 					ELSE
@@ -271,7 +271,7 @@ BEGIN
                 	-- alarm goes on
 					alarm_led <= '1';
 					-- change state conditions
-					IF b2_stable = '1' THEN
+					IF b1_stable = '1' THEN
 						next_state <= STANDBY;
 						alarm_led <= '0';
 						alarm_active <= '0';
