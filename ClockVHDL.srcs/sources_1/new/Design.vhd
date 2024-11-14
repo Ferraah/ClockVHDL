@@ -11,6 +11,8 @@ ENTITY Main IS
 		--check_m_u, check_m_d, check_h_u, check_h_d : OUT INTEGER RANGE 0 TO 9; -- Check time values 	
 		--check_alarm_active : OUT std_logic; -- Check alarm active signal
 		alarm_led : OUT std_logic -- Alarm LED
+		led_setting_time : OUT std_logic -- Alarm LED
+		led_setting_alarm : OUT std_logic -- Alarm LED
 	);
 END Main;
 
@@ -140,6 +142,8 @@ BEGIN
 			h_d <= 0;
 			alarm_active <= '0';
 			alarm_led <= '0';
+			led_setting_time <= '0';
+			led_setting_alarm <= '0';
 			alarm_h_u <= 0;
 			alarm_h_d <= 0;
 			alarm_m_u <= 0;
@@ -187,6 +191,8 @@ BEGIN
 			CASE current_state IS
             
 				WHEN STANDBY =>
+					led_setting_time = '0';
+					led_setting_alarm = '0';
 					-- change state conditions
 					IF b1_stable = '1' THEN
 						next_state <= SETTING_TIME;
@@ -202,6 +208,8 @@ BEGIN
 					END IF;
                     
 				WHEN SETTING_TIME =>
+					led_setting_time = '1';
+					led_setting_alarm = '0';
 					-- increment time
 					IF b2 = '1' AND b2_last = '0' THEN
 						IF h_d = 2 AND h_u = 3 THEN
@@ -234,6 +242,8 @@ BEGIN
                     
 				WHEN SETTING_ALARM =>
                 	-- increment alarm time
+					led_setting_time = '0';
+					led_setting_alarm = '1';
 					IF b2 = '1' AND b2_last = '0' THEN
 						IF alarm_h_d = 2 AND alarm_h_u = 3 THEN
 							alarm_h_d <= 0;
@@ -269,6 +279,8 @@ BEGIN
                     
 				WHEN ALARM_TRIGGERED =>
                 	-- alarm goes on
+					led_setting_time = '0';
+					led_setting_alarm = '0';
 					alarm_led <= '1';
 					-- change state conditions
 					IF b1_stable = '1' THEN
