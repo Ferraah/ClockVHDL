@@ -24,7 +24,7 @@ architecture Behavioral of Display is
         );
     end component;
 
-    signal clk_blink          : std_logic := '0'; -- Slow clock for blinking
+    --signal clk_blink          : std_logic := '0'; -- Slow clock for blinking
     signal digit_selector_reg  : integer range 0 to 3 := 0;
     signal current_value       : integer range 0 to 9 := 0;
 

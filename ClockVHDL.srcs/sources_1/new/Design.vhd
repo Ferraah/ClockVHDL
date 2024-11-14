@@ -68,7 +68,7 @@ ARCHITECTURE hardware OF Main IS
 	SIGNAL alarm_active : std_logic := '0';
     
     -- Button debouncing
-	SIGNAL b1_last, b2_last, b3_last, b4_last : std_logic := '0'; 
+	SIGNAL b2_last, b3_last : std_logic := '0'; 
 	SIGNAL b1_stable, b2_stable, b3_stable, b4_stable : std_logic := '0';
     
 	-- State definitions
@@ -285,16 +285,12 @@ BEGIN
 			b2_stable <= '0';
 			b3_stable <= '0';
 			b4_stable <= '0';
-			b1_last <= '0';
 			b2_last <= '0';
 			b3_last <= '0';
-			b4_last <= '0';
 		ELSIF rising_edge(clk_10hz) THEN
         
-			b1_last <= b1;
 			b2_last <= b2;
 			b3_last <= b3;
-			b4_last <= b4;
             
             -- button b1
 			IF b1 = '1' THEN
