@@ -24,7 +24,7 @@ architecture testbench of normal_mode_tb is
 
     -- constant clk_period : time := 20 ns; -- 20 ns per clock cycle
     constant clk_period : time := 20 ns; -- 20 ns per clock cycle
-    constant clk_seconds_period : time := 10*20 ns; 
+    constant clk_buttons : time := 10*20 ns; 
 
     -- Clock instance
     component Main
@@ -91,12 +91,11 @@ begin
             assert h_u = ((i/60) mod 10) report "Incorrect hours units" severity error;
             assert h_d = ((i/600) mod 4) report "Incorrect hours tens" severity error;
 
-            wait for time_to_clock_cycles(0, 1)*clk_seconds_period;
+            wait for time_to_clock_cycles(0, 1)*clk_buttons;
         end loop; 
 
-        -- wait for time_to_clock_cycles(25, 0)*clk_period;
 
-        wait for 10*clk_period;
+        wait for clk_buttons;
         rst <= '1';
         assert false report "Testbench finished" severity note;
 

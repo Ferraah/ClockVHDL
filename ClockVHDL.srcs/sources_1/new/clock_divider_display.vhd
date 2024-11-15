@@ -4,8 +4,8 @@ use IEEE.NUMERIC_STD.ALL;
 
 entity ClockDividerDisplay is
     Generic (
-        DIVISOR : integer := 10000 -- Division factor
-        --DIVISOR : integer := 100 -- Division factor
+        --DIVISOR : integer := 10000 -- Division factor
+        DIVISOR : integer := 100 -- Division factor
     );
     Port (
         clk_in  : in  STD_LOGIC;

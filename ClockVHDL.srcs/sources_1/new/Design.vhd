@@ -8,10 +8,10 @@ ENTITY Main IS
 		b1, b2, b3, b4 : IN std_logic; -- Buttons
 		segments : OUT std_logic_vector(6 DOWNTO 0); -- 7-segment display
 		anode : OUT std_logic_vector(3 DOWNTO 0); -- Anode display
-		--check_m_u, check_m_d, check_h_u, check_h_d : OUT INTEGER RANGE 0 TO 9; -- Check time values 	
-		--check_alarm_active : OUT std_logic; -- Check alarm active signal
-		alarm_led : OUT std_logic -- Alarm LED
-		led_setting_time : OUT std_logic -- Alarm LED
+		check_m_u, check_m_d, check_h_u, check_h_d : OUT INTEGER RANGE 0 TO 9; -- Check time values 	
+		check_alarm_active : OUT std_logic; -- Check alarm active signal
+		alarm_led : OUT std_logic; -- Alarm LED
+		led_setting_time : OUT std_logic; -- Alarm LED
 		led_setting_alarm : OUT std_logic -- Alarm LED
 	);
 END Main;
@@ -120,16 +120,16 @@ BEGIN
 		anode => anode
 	);
 
---	-- To debug
---	PROCESS(m_u, m_d, h_u, h_d, alarm_active)
---	BEGIN
---		check_m_u <= m_u;
---		check_m_d <= m_d;
---		check_h_u <= h_u;
---		check_h_d <= h_d;
---		check_alarm_active <= alarm_active;
---	END PROCESS;
-
+	-- To debug
+	PROCESS(m_u, m_d, h_u, h_d, alarm_active)
+	BEGIN
+		check_m_u <= m_u;
+		check_m_d <= m_d;
+		check_h_u <= h_u;
+		check_h_d <= h_d;
+		check_alarm_active <= alarm_active;
+	END PROCESS;
+	
 	-- Main process
 	PROCESS (clk_10hz, rst)
 	BEGIN
@@ -191,8 +191,8 @@ BEGIN
 			CASE current_state IS
             
 				WHEN STANDBY =>
-					led_setting_time = '0';
-					led_setting_alarm = '0';
+					led_setting_time <= '0';
+					led_setting_alarm <= '0';
 					-- change state conditions
 					IF b1_stable = '1' THEN
 						next_state <= SETTING_TIME;
@@ -208,8 +208,8 @@ BEGIN
 					END IF;
                     
 				WHEN SETTING_TIME =>
-					led_setting_time = '1';
-					led_setting_alarm = '0';
+					led_setting_time <= '1';
+					led_setting_alarm <= '0';
 					-- increment time
 					IF b2 = '1' AND b2_last = '0' THEN
 						IF h_d = 2 AND h_u = 3 THEN
@@ -242,8 +242,8 @@ BEGIN
                     
 				WHEN SETTING_ALARM =>
                 	-- increment alarm time
-					led_setting_time = '0';
-					led_setting_alarm = '1';
+					led_setting_time <= '0';
+					led_setting_alarm <= '1';
 					IF b2 = '1' AND b2_last = '0' THEN
 						IF alarm_h_d = 2 AND alarm_h_u = 3 THEN
 							alarm_h_d <= 0;
@@ -279,8 +279,8 @@ BEGIN
                     
 				WHEN ALARM_TRIGGERED =>
                 	-- alarm goes on
-					led_setting_time = '0';
-					led_setting_alarm = '0';
+					led_setting_time <= '0';
+					led_setting_alarm <= '0';
 					alarm_led <= '1';
 					-- change state conditions
 					IF b1_stable = '1' THEN
