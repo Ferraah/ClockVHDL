@@ -77,7 +77,6 @@ ARCHITECTURE hardware OF Main IS
     -- Button debouncing
 	SIGNAL b2_last, b3_last : std_logic := '0'; 
 	SIGNAL b1_stable, b2_stable, b3_stable, b4_stable : std_logic := '0';
-	SIGNAL b1_stable_last, b2_stable_last, b3_stable_last, b4_stable_last : std_logic := '0';
     
 	-- State definitions
 	CONSTANT STANDBY : INTEGER := 0;
@@ -195,9 +194,9 @@ BEGIN
 					led_setting_time <= '0';
 					led_setting_alarm <= '0';
 					-- change state conditions
-					IF b1_stable = '1' and b1_stable_last = '0' THEN
+					IF b2_stable = '1' THEN
 						next_state <= SETTING_TIME;
-					ELSIF b3_stable = '1' and b3_stable_last = '0' THEN
+					ELSIF b3_stable = '1' THEN
 						next_state <= SETTING_ALARM;
 					ELSE
 						next_state <= STANDBY;
@@ -235,7 +234,7 @@ BEGIN
 						END IF;
 					END IF;
 					-- change state conditions
-					IF b4_stable = '1' and b4_stable_last = '0' THEN
+					IF b4_stable = '1' THEN
 						next_state <= STANDBY;
 					ELSE
 						next_state <= SETTING_TIME;
@@ -268,10 +267,10 @@ BEGIN
 						END IF;
 					END IF;
 					-- change state conditions
-					IF b4_stable = '1' and b4_stable_last = '0'THEN -- exit the alarm setting saving the changes
+					IF b4_stable = '1' THEN -- exit the alarm setting saving the changes
 						alarm_active <= '1';
 						next_state <= STANDBY;
-					ELSIF b1_stable = '1' and b1_stable_last = '0' THEN -- exit the alarm without setting saving the changes
+					ELSIF b1_stable = '1' THEN -- exit the alarm without setting saving the changes
 						alarm_active <= '0';
 						next_state <= STANDBY;
 					ELSE
@@ -284,7 +283,7 @@ BEGIN
 					led_setting_alarm <= '0';
 					alarm_led <= '1';
 					-- change state conditions
-					IF b1_stable = '1' and b1_stable_last = '0'THEN
+					IF b4_stable = '1' THEN
 						next_state <= STANDBY;
 						alarm_led <= '0';
 						alarm_active <= '0';
@@ -308,20 +307,13 @@ BEGIN
 			b2_stable <= '0';
 			b3_stable <= '0';
 			b4_stable <= '0';
-			b1_stable_last <= '0';
-			b2_stable_last <= '0';
-			b3_stable_last <= '0';
-			b4_stable_last <= '0';
 			b2_last <= '0';
 			b3_last <= '0';
 		ELSIF rising_edge(clk_10hz) THEN
         
 			b2_last <= b2;
 			b3_last <= b3;
-            		b1_stable_last <= b1_stable;
-            		b2_stable_last <= b2_stable;
-            		b3_stable_last <= b3_stable;
-            		b4_stable_last <= b4_stable;
+            
             -- button b1
 			IF b1 = '1' THEN
             	-- check if button is stable (pressed more than 2s)
