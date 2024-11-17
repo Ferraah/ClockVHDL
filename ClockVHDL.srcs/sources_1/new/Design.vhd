@@ -8,8 +8,8 @@ ENTITY Main IS
 		b1, b2, b3, b4 : IN std_logic; -- Buttons
 		segments : OUT std_logic_vector(6 DOWNTO 0); -- 7-segment display
 		anode : OUT std_logic_vector(3 DOWNTO 0); -- Anode display
-		check_m_u, check_m_d, check_h_u, check_h_d : OUT INTEGER RANGE 0 TO 9; -- Check time values 	
-		check_alarm_active : OUT std_logic; -- Check alarm active signal
+--		check_m_u, check_m_d, check_h_u, check_h_d : OUT INTEGER RANGE 0 TO 9; -- Check time values 	
+--		check_alarm_active : OUT std_logic; -- Check alarm active signal
 		alarm_led : OUT std_logic; -- Alarm LED
 		led_setting_time : OUT std_logic; -- Alarm LED
 		led_setting_alarm : OUT std_logic -- Alarm LED
@@ -123,15 +123,15 @@ BEGIN
 		anode => anode
 	);
 
-	-- To debug
-	PROCESS(m_u, m_d, h_u, h_d, alarm_active)
-	BEGIN
-		check_m_u <= m_u;
-		check_m_d <= m_d;
-		check_h_u <= h_u;
-		check_h_d <= h_d;
-		check_alarm_active <= alarm_active;
-	END PROCESS;
+--	-- To debug
+--	PROCESS(m_u, m_d, h_u, h_d, alarm_active)
+--	BEGIN
+--		check_m_u <= m_u;
+--		check_m_d <= m_d;
+--		check_h_u <= h_u;
+--		check_h_d <= h_d;
+--		check_alarm_active <= alarm_active;
+--	END PROCESS;
 	
 	-- Main process
 	PROCESS (clk_10hz, rst)
