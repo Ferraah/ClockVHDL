@@ -76,7 +76,7 @@ ARCHITECTURE hardware OF Main IS
     
     -- Button debouncing
 	SIGNAL b2_last, b3_last : std_logic := '0'; 
-	SIGNAL b1_stable, b2_stable, b3_stable, b4_stable : std_logic := '0';
+	SIGNAL b1_stable, b3_stable, b4_stable : std_logic := '0';
     
 	SIGNAL hold_b1_time, hold_b2_time, hold_b3_time, hold_b4_time : INTEGER RANGE 0 TO 19 := 0;
 	
@@ -304,7 +304,6 @@ BEGIN
 	BEGIN
 		IF rst = '1' THEN
 			b1_stable <= '0';
-			b2_stable <= '0';
 			b3_stable <= '0';
 			b4_stable <= '0';
 			b2_last <= '0';
@@ -329,19 +328,20 @@ BEGIN
 				b1_stable <= '0';
 			END IF;
             
-            -- button b2
-            IF b2 = '1' THEN
-				-- check if button is stable (pressed more than 2s)
-				IF hold_b2_time = 19 THEN
-				hold_b2_time <= 0;
-				b2_stable <= '1';
-				ELSE
-					hold_b2_time <= hold_b2_time + 1;
-					b2_stable <= '0';
-				END IF;
-			ELSE
-				b2_stable <= '0';
-			END IF;
+            -- Not used
+--            -- button b2
+--            IF b2 = '1' THEN
+--				-- check if button is stable (pressed more than 2s)
+--				IF hold_b2_time = 19 THEN
+--				hold_b2_time <= 0;
+--				b2_stable <= '1';
+--				ELSE
+--					hold_b2_time <= hold_b2_time + 1;
+--					b2_stable <= '0';
+--				END IF;
+--			ELSE
+--				b2_stable <= '0';
+--			END IF;
             
             -- Button b3
 			IF b3 = '1' THEN
