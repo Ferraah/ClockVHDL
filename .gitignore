@@ -1,7 +1,6 @@
-# Ignore everything
-*
-
-!*/ClockVHDL.srcs
-!.gitignore
-
-
+ClockVHDL.cache
+ClockVHDL.hw
+ClockVHDL.ip_user_files
+ClockVHDL.runs
+ClockVHDL.sim
+ClockVHDL.xpr

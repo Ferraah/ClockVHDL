@@ -25,7 +25,7 @@ architecture testbench of alarm_tb is
     signal alarm_led : std_logic := '0';
 
     constant clk_period : time := 20 ns; -- 20 ns per clock cycle
-
+    constant clk_buttons : time := 10*20 ns; 
     -- Clock instance
     component clock
         port (
@@ -82,46 +82,46 @@ begin
     begin
         -- Reset the clock
         rst <= '1';
-        wait for clk_period;
+        wait for clk_buttons;
         rst <= '0';
         wait for 1000 ns;
 
         -- Enter alarm mode 
         b4 <= '1'; 
-        wait for clk_period*10*2; -- Hold `b4` for 2 seconds to enter alarm mode
+        wait for clk_buttons*2; -- Hold `b4` for 2 seconds to enter alarm mode
         b4 <= '0';
-        wait for clk_period;
+        wait for clk_buttons;
       
       	-- set the alarm to 00:02, doing a full cycle of digit
 		-- increment minutes
-        for i in 1 to 62 loop
+        for i in 1 to 64 loop
             b3 <= '1';
-            wait for clk_period;
+            wait for clk_buttons;
             b3 <= '0'; -- Release b3 to simulate button lock
-            wait for clk_period; -- Delay to ensure only one increment per press
+            wait for clk_buttons; -- Delay to ensure only one increment per press
         end loop;
             
 
 		-- increment hours, doing a full cycle of digit
          for i in 1 to 24 loop
             b2 <= '1';
-            wait for clk_period;
+            wait for clk_buttons;
             b2 <= '0'; -- Release b3 to simulate button lock
-            wait for clk_period; -- Delay to ensure only one increment per press
+            wait for clk_buttons; -- Delay to ensure only one increment per press
         end loop;
 
 
 		-- exit alarm setting with saving the alarm time
         b1 <= '1';
-        wait for clk_period*10*2;
+        wait for clk_buttons*2; -- Hold `b1` for 2 seconds to exit alarm mode
         b1 <= '0';
-        wait for clk_period;
+        wait for clk_buttons;
 
         assert check_alarm_active = '1' report "Alarm not active" severity error;
 
-        wait for time_to_clock_cycles(0, 2)*clk_period; -- Wait for 2 minutes ) 
+        wait for time_to_clock_cycles(0, 1)*clk_period; -- Wait for 1 minute ) 
         
-        assert check_m_u = 2 report "Incorrect minutes units" severity error;
+        assert check_m_u = 4 report "Incorrect minutes units" severity error;
         assert check_m_d = 0 report "Incorrect minutes tens" severity error;
         assert check_h_u = 0 report "Incorrect hours units" severity error;
         assert check_h_d = 0 report "Incorrect hours tens" severity error;
@@ -129,7 +129,7 @@ begin
         assert alarm_led = '1' report "Alarm not ringing" severity error;
 
         b2 <= '1'; 
-        wait for clk_period*10*2; -- Hold `b2` for 2 seconds to stop the alarm
+        wait for clk_buttons*2; -- Hold `b2` for 2 seconds to stop the alarm
         b2 <= '0';
             
         assert alarm_led = '0' report "Alarm not stopped" severity error;

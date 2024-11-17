@@ -1,10 +1,40 @@
+----------------------------------------------------------------------------------
+-- Company: 
+-- Engineer: 
+-- 
+-- Create Date: 11/16/2024 02:51:42 PM
+-- Design Name: 
+-- Module Name: debouncing_tb - Behavioral
+-- Project Name: 
+-- Target Devices: 
+-- Tool Versions: 
+-- Description: 
+-- 
+-- Dependencies: 
+-- 
+-- Revision:
+-- Revision 0.01 - File Created
+-- Additional Comments:
+-- 
+----------------------------------------------------------------------------------
+
+
 library IEEE;
-use IEEE.std_logic_1164.all;
+use IEEE.STD_LOGIC_1164.ALL;
 
-entity normal_mode_tb is
-end normal_mode_tb;
+-- Uncomment the following library declaration if using
+-- arithmetic functions with Signed or Unsigned values
+--use IEEE.NUMERIC_STD.ALL;
 
-architecture testbench of normal_mode_tb is
+-- Uncomment the following library declaration if instantiating
+-- any Xilinx leaf cells in this code.
+--library UNISIM;
+--use UNISIM.VComponents.all;
+
+entity debouncing_tb is
+end debouncing_tb;
+
+architecture Behavioral of debouncing_tb is
     -- Clock signals
     signal clk : std_logic := '0';
     signal rst : std_logic := '0';
@@ -39,13 +69,6 @@ architecture testbench of normal_mode_tb is
     
         );
     end component;
-
-    -- Clock cycles to perform the indicated time on the clock
-    pure function time_to_clock_cycles(hours : integer; minutes: integer) return integer is
-    begin
-       return (hours * 3600 + minutes * 60) * 10; 
-    end function;
-
 begin
     -- Instantiate the clock
     uut: Main
@@ -73,32 +96,32 @@ begin
         wait for clk_period / 2;
     end process clk_process;
 
-    -- Test process with button pressed lock functionality
-    test_process : process
+    clk_buttons_process : process
     begin
-        -- Reset the clock
         rst <= '1';
-        wait for clk_period;
-        rst <= '0';
-        wait for 10*clk_period;
-
-        -- Every minute check for right time
-        
-        for i in 0 to 60*24 - 1 loop
-            -- Check if the minutes and hours are correct
-            assert m_u = (i mod 10) report "Incorrect minutes units" severity error;
-            assert m_d = ((i/10) mod 6) report "Incorrect minutes tens" severity error;
-            assert h_u = ((i/60) mod 10) report "Incorrect hours units" severity error;
-            assert h_d = ((i/600) mod 4) report "Incorrect hours tens" severity error;
-
-            wait for time_to_clock_cycles(0, 1)*clk_buttons;
-        end loop; 
-
-
         wait for clk_buttons;
-        rst <= '1';
-        assert false report "Testbench finished" severity note;
+        rst <= '0';
+        wait for 1000 ns;
+        b3 <= '1';
+        wait for clk_buttons * (20);
+        b3 <= '0';
+        wait for clk_buttons * 20;
+        b1 <= '1';
+        wait for clk_buttons * (80);
+        b1 <= '0';
+        wait for clk_buttons;
+        b2 <= '1';
+        wait for clk_buttons * 8;
+        b2 <= '0';
+        wait for clk_buttons;
+        b3 <= '1';
+        wait for clk_buttons * 8;
+        b3 <= '0';
+        wait for clk_buttons;
+        
+    end process;
+    
+end Behavioral;
 
-    end process test_process;
 
-end testbench;
+
