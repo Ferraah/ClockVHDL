@@ -152,7 +152,7 @@ BEGIN
 		ELSIF rising_edge(clk_10hz) THEN
 			
             -- State transitions
-			current_state <= next_state;
+			--current_state <= next_state;
             
 			-- Count seconds and increment digits accordingly
 			IF count_clock = 9 THEN
@@ -194,17 +194,17 @@ BEGIN
 					led_setting_time <= '0';
 					led_setting_alarm <= '0';
 					-- change state conditions
-					IF b2_stable = '1' THEN
-						next_state <= SETTING_TIME;
+					IF b1_stable = '1' THEN
+						current_state <= SETTING_TIME;
 					ELSIF b3_stable = '1' THEN
-						next_state <= SETTING_ALARM;
+						current_state <= SETTING_ALARM;
 					ELSE
-						next_state <= STANDBY;
+						current_state <= STANDBY;
 					END IF;
 					-- alarm trigger
 					IF alarm_active = '1' AND h_u = alarm_h_u AND h_d = alarm_h_d AND m_u = alarm_m_u AND m_d = alarm_m_d THEN
 						alarm_led <= '1';
-						next_state <= ALARM_TRIGGERED;
+						current_state <= ALARM_TRIGGERED;
 					END IF;
                     
 				WHEN SETTING_TIME =>
@@ -235,9 +235,9 @@ BEGIN
 					END IF;
 					-- change state conditions
 					IF b4_stable = '1' THEN
-						next_state <= STANDBY;
+						current_state <= STANDBY;
 					ELSE
-						next_state <= SETTING_TIME;
+						current_state <= SETTING_TIME;
 					END IF;
                     
 				WHEN SETTING_ALARM =>
@@ -269,12 +269,12 @@ BEGIN
 					-- change state conditions
 					IF b4_stable = '1' THEN -- exit the alarm setting saving the changes
 						alarm_active <= '1';
-						next_state <= STANDBY;
+						current_state <= STANDBY;
 					ELSIF b1_stable = '1' THEN -- exit the alarm without setting saving the changes
 						alarm_active <= '0';
-						next_state <= STANDBY;
+						current_state <= STANDBY;
 					ELSE
-						next_state <= SETTING_ALARM;
+						current_state <= SETTING_ALARM;
 					END IF;
                     
 				WHEN ALARM_TRIGGERED =>
@@ -283,12 +283,12 @@ BEGIN
 					led_setting_alarm <= '0';
 					alarm_led <= '1';
 					-- change state conditions
-					IF b4_stable = '1' THEN
-						next_state <= STANDBY;
+					IF b1_stable = '1' THEN
+						current_state <= STANDBY;
 						alarm_led <= '0';
 						alarm_active <= '0';
 					ELSE
-						next_state <= ALARM_TRIGGERED;
+						current_state <= ALARM_TRIGGERED;
 					END IF;
 			END CASE;
 		END IF;
@@ -297,10 +297,7 @@ BEGIN
     
 	-- Debouncing for buttons
 	DEBOUNCE_PROCESS : PROCESS (clk_10hz, rst)
-		VARIABLE hold_b1_time : INTEGER := 0;
-		VARIABLE hold_b2_time : INTEGER := 0;
-		VARIABLE hold_b3_time : INTEGER := 0;
-		VARIABLE hold_b4_time : INTEGER := 0;
+		
 	BEGIN
 		IF rst = '1' THEN
 			b1_stable <= '0';
@@ -314,59 +311,61 @@ BEGIN
 			b2_last <= b2;
 			b3_last <= b3;
             
+            
             -- button b1
 			IF b1 = '1' THEN
             	-- check if button is stable (pressed more than 2s)
-				hold_b1_time := hold_b1_time + 1;
-				IF hold_b1_time >= 19 THEN
-					b1_stable <= '1';
+				IF hold_b1_time = 19 THEN
+				hold_b1_time <= 0;
+				b1_stable <= '1';
 				ELSE
+					hold_b1_time <= hold_b1_time + 1;
 					b1_stable <= '0';
 				END IF;
 			ELSE
-				hold_b1_time := 0;
 				b1_stable <= '0';
 			END IF;
             
             -- button b2
             IF b2 = '1' THEN
-				hold_b2_time := hold_b2_time + 1;
-				IF hold_b2_time >= 19 THEN
-					b2_stable <= '1';
+				-- check if button is stable (pressed more than 2s)
+				IF hold_b2_time = 19 THEN
+				hold_b2_time <= 0;
+				b2_stable <= '1';
 				ELSE
+					hold_b2_time <= hold_b2_time + 1;
 					b2_stable <= '0';
 				END IF;
 			ELSE
-				hold_b2_time := 0;
 				b2_stable <= '0';
 			END IF;
             
             -- Button b3
 			IF b3 = '1' THEN
-				hold_b3_time := hold_b3_time + 1;
-				IF hold_b3_time >= 19 THEN
-					b3_stable <= '1';
+				-- check if button is stable (pressed more than 2s)
+				IF hold_b3_time = 19 THEN
+				hold_b3_time <= 0;
+				b3_stable <= '1';
 				ELSE
+					hold_b3_time <= hold_b3_time + 1;
 					b3_stable <= '0';
 				END IF;
-   
 			ELSE
-				hold_b3_time := 0;
 				b3_stable <= '0';
 			END IF;
             
             
             -- Button b4
 			IF b4 = '1' THEN
-				hold_b4_time := hold_b4_time + 1;
-				IF hold_b4_time >= 19 THEN
-					b4_stable <= '1';
+				-- check if button is stable (pressed more than 2s)
+				IF hold_b4_time = 19 THEN
+				hold_b4_time <= 0;
+				b4_stable <= '1';
 				ELSE
+					hold_b4_time <= hold_b4_time + 1;
 					b4_stable <= '0';
 				END IF;
-                
 			ELSE
-				hold_b4_time := 0;
 				b4_stable <= '0';
 			END IF;
             
