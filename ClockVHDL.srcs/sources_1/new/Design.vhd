@@ -66,7 +66,7 @@ ARCHITECTURE hardware OF Main IS
 	SIGNAL m_d : INTEGER RANGE 0 TO 5; -- minutes tens (0 to 5)
 	SIGNAL h_u : INTEGER RANGE 0 TO 9; -- hours units (0 to 9)
 	SIGNAL h_d : INTEGER RANGE 0 TO 2; -- hours tens (0 to 2)
-    
+   
     -- Alarm
 	SIGNAL alarm_m_u : INTEGER RANGE 0 TO 9; -- alarm minutes units (0 to 9)
 	SIGNAL alarm_m_d : INTEGER RANGE 0 TO 5; -- alarm minutes tens (0 to 5)
@@ -78,6 +78,9 @@ ARCHITECTURE hardware OF Main IS
 	SIGNAL b2_last, b3_last : std_logic := '0'; 
 	SIGNAL b1_stable, b2_stable, b3_stable, b4_stable : std_logic := '0';
     
+	SIGNAL hold_b1_time, hold_b2_time, hold_b3_time, hold_b4_time : INTEGER RANGE 0 TO 19 := 0;
+	
+	-- Alarm LED
 	-- State definitions
 	CONSTANT STANDBY : INTEGER := 0;
 	CONSTANT SETTING_TIME : INTEGER := 1;
@@ -283,7 +286,7 @@ BEGIN
 					led_setting_alarm <= '0';
 					alarm_led <= '1';
 					-- change state conditions
-					IF b1_stable = '1' THEN
+					IF b4_stable = '1' THEN
 						current_state <= STANDBY;
 						alarm_led <= '0';
 						alarm_active <= '0';
